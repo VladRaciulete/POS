@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:pageTemplate pageTitle="POS">
-  <h1>Welcome!</h1>
+<t:pageTemplate pageTitle="About POS">
+    <h1>About page</h1>
 </t:pageTemplate>
