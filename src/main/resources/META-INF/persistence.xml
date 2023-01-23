@@ -5,5 +5,8 @@
              version="3.0">
   <persistence-unit name="default">
 
+      <class>com.pos.pos.entities.Product</class>
+      <class>com.pos.pos.entities.User</class>
+      <class>com.pos.pos.entities.Category</class>
   </persistence-unit>
 </persistence>
