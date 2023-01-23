@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 public class Product {
     private Long id;
     private String name;
+    private Category category;
     private int quantity;
 
     public void setId(Long id) {
@@ -34,8 +35,6 @@ public class Product {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    private Category category;
 
     @ManyToOne
     public Category getCategory() {

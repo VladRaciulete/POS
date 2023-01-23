@@ -1,82 +1,22 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:pageTemplate pageTitle="Products">
   <h1>Those are the available products!</h1>
 
   <div class="container text-center">
-    <div class="row">
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-        Product1
-      </div>
-      <div class="col">
-          P11
-      </div>
-    </div>
+    <c:forEach var="product" items="${products}">
+      <div class="row">
 
-    <div class="row">
-      <div class="col">
-        Product2
+        <div class="col">
+            ${product.id}
+        </div>
+
+        <div class="col">
+            ${product.name}
+        </div>
+
       </div>
-      <div class="col">
-        P22
-      </div>
-    </div>
+    </c:forEach>
   </div>
 </t:pageTemplate>
