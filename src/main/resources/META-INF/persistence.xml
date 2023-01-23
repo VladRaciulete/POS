@@ -3,10 +3,16 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
-  <persistence-unit name="default">
 
-      <class>com.pos.pos.entities.Product</class>
-      <class>com.pos.pos.entities.User</class>
-      <class>com.pos.pos.entities.Category</class>
-  </persistence-unit>
+      <persistence-unit name="default" transaction-type="JTA">
+          <jta-data-source>jdbc/PointOfSalesResource</jta-data-source>
+          <class>com.pos.pos.entities.Product</class>
+          <class>com.pos.pos.entities.User</class>
+          <class>com.pos.pos.entities.Category</class>
+
+          <properties>
+              <property name="jakarta.persistence.schema-generation.database.action" value="create-or-extend-tables" />
+          </properties>
+
+      </persistence-unit>
 </persistence>
