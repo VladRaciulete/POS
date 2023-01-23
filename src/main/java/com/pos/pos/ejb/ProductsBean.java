@@ -38,7 +38,7 @@ public class ProductsBean {
         Category category;
         for(Product elem : products){
             category = elem.getCategory();
-            var = new ProductDto(elem.getId(), elem.getName(),category);
+            var = new ProductDto(elem.getId(), elem.getName(), elem.getQuantity(), category);
             productsDto.add(var);
         }
         return productsDto;
@@ -56,5 +56,29 @@ public class ProductsBean {
         product.setCategory(category);
 
         entityManager.persist(product);
+    }
+
+    public ProductDto findById(Long productId) {
+        Product product = entityManager.find(Product.class,productId);
+        Category category = product.getCategory();
+
+        ProductDto productDto = new ProductDto(product.getId(), product.getName(), product.getQuantity(), category);
+
+        return productDto;
+    }
+
+    public void updateProduct(Long productId, String name, int quantity, Long categoryId) {
+        LOG.info("updateProduct");
+
+        Product product = entityManager.find(Product.class,productId);
+        product.setName(name);
+        product.setQuantity(quantity);
+
+        Category oldCategory = product.getCategory();
+        oldCategory.getProducts().remove(product);
+
+        Category category = entityManager.find(Category.class,categoryId);
+        category.getProducts().add(product);
+        product.setCategory(category);
     }
 }

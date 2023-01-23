@@ -9,6 +9,7 @@
           <class>com.pos.pos.entities.Product</class>
           <class>com.pos.pos.entities.User</class>
           <class>com.pos.pos.entities.Category</class>
+          <class>com.pos.pos.entities.UserGroup</class>
 
           <properties>
               <property name="jakarta.persistence.schema-generation.database.action" value="create-or-extend-tables" />

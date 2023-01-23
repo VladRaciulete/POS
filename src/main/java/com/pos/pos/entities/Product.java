@@ -9,9 +9,7 @@ public class Product {
     private Category category;
     private int quantity;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     @Id
     @GeneratedValue
