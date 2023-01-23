@@ -4,6 +4,8 @@
 <t:pageTemplate pageTitle="Products">
   <h1>Those are the available products!</h1>
 
+  <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/AddProduct">Add Product</a>
+
   <div class="container text-center">
     <c:forEach var="product" items="${products}">
       <div class="row">

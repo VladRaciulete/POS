@@ -35,12 +35,26 @@ public class ProductsBean {
     private List<ProductDto> copyProductsToDto(List<Product> products){
         List<ProductDto> productsDto = new ArrayList<>();
         ProductDto var;
-        //Category category;
+        Category category;
         for(Product elem : products){
-            //category = elem.getCategory();
-            var = new ProductDto(elem.getId(), elem.getName());
+            category = elem.getCategory();
+            var = new ProductDto(elem.getId(), elem.getName(),category);
             productsDto.add(var);
         }
         return productsDto;
+    }
+
+    public void createProduct(String name,int quantity, Long category_id){
+        LOG.info("createProduct");
+
+        Product product = new Product();
+        product.setName(name);
+        product.setQuantity(quantity);
+
+        Category category = entityManager.find(Category.class,category_id);
+        category.getProducts().add(product);
+        product.setCategory(category);
+
+        entityManager.persist(product);
     }
 }
