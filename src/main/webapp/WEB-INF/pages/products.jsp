@@ -4,44 +4,64 @@
 <t:pageTemplate pageTitle="Products">
   <h1>Those are the available products!</h1>
 
-  <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
-    <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/AddProduct">Add Product</a>
-    <button class="btn btn-danger" type="submit">Delete users</button>
-  </c:if>
 
-  <div class="container text-center">
-    <div class="row">
-    <c:forEach var="product" items="${products}">
-      <div class="border border-dark col">
+    <form method="POST" action="${pageContext.request.contextPath}/Products">
+      <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/AddProduct">Add Product</a>
+        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/AddCategory">Add Category</a>
+        <button class="btn btn-danger" type="submit">Delete products</button>
+      </c:if>
+
+      <div class="container text-center">
         <div class="row">
 
-          <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
-            <div class="col">
-              <input type="checkbox" name="product_ids" value="${product.id}">
-            </div>
-          </c:if>
+          <c:forEach var="elem" items="${productsByCategoryList}">
 
-          <div class="col">
+            <h2>${elem.categoryName}</h2>
 
-            <div class="row">
-                POZA
-            </div>
+            <c:forEach var="product" items="${elem.products}">
 
+              <div class="border border-dark col-3">
+                <div class="row">
 
-            <div class="row">
-                  ${product.name} > ${product.quantity}
-            </div>
+                  <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+                    <div class="col">
+                      <div class="row">
+                        <input type="checkbox" name="product_ids" value="${product.id}">
+                      </div>
 
-            <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
-              <div class="row">
-                <a class="w-75 btn btn-secondary" href="${pageContext.request.contextPath}/EditProduct?id=${product.id}">Edit Product</a>
+                      <div class="row">
+                        <a class="btn btn-secondary" href="${pageContext.request.contextPath}/EditProduct?id=${product.id}">Edit Product</a>
+                      </div>
+                    </div>
+                  </c:if>
+
+                  <div class="col">
+
+                    <div class="row">
+                      POZA
+                    </div>
+
+                    <div class="row">
+                        ${product.name}
+                    </div>
+
+                  <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+                    <div class="row">
+                       quantity=${product.quantity}
+                    </div>
+                  </c:if>
+
+                  </div>
+                </div>
               </div>
-            </c:if>
 
-          </div>
+            </c:forEach>
+                <br>
+                <br>
+          </c:forEach>
+
         </div>
       </div>
-    </c:forEach>
-    </div>
-  </div>
+    </form>
 </t:pageTemplate>

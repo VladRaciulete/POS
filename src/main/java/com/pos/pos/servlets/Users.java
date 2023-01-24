@@ -9,6 +9,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,6 +36,14 @@ public class Users extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String[] userIdsAsString = request.getParameterValues("user_ids");
+        if(userIdsAsString != null){
+            List<Long> userIds = new ArrayList<>();
+            for(String userIdAsString : userIdsAsString){
+                userIds.add(Long.parseLong(userIdAsString));
+            }
+            usersBean.deleteUsersByIds(userIds);
+        }
+        response.sendRedirect(request.getContextPath() + "/Users");
     }
 }

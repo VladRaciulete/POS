@@ -59,6 +59,42 @@ public class UsersBean {
         entityManager.persist(newUser);
         assignGroupsToUser(username, groups);
     }
+
+    public void deleteUserRightsByIds(Collection<Long> userIds){
+        LOG.info("deleteUserRightsByIds");
+
+        Collection <String> usernames = findUsernamesByUserIds(userIds);
+        Collection <Long> groupIds = findUserGroupIdsByUsernames(usernames);
+
+        for(Long groupId : groupIds){
+            UserGroup usergroup = entityManager.find(UserGroup.class,groupId);
+            entityManager.remove(usergroup);
+        }
+    }
+
+    public Collection<Long> findUserGroupIdsByUsernames(Collection<String> usernames) {
+        List <Long> groupIds = entityManager.createQuery("SELECT g.id FROM UserGroup g WHERE g.username IN :usernames",Long.class)
+                .setParameter("usernames",usernames)
+                .getResultList();
+        return groupIds;
+    }
+
+
+    public void updateUser(Long userId, String username, String email, String password, Collection<String> groups){
+        LOG.info("updateUser");
+
+        User user = entityManager.find(User.class,userId);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
+
+        Collection <Long> userIds = new ArrayList<>();
+        userIds.add(userId);
+        deleteUserRightsByIds(userIds);
+
+        assignGroupsToUser(username, groups);
+    }
+
     private void assignGroupsToUser(String username, Collection<String> groups) {
         LOG.info("assignGroupsToUser");
         for (String group : groups) {
@@ -75,4 +111,23 @@ public class UsersBean {
                 .getResultList();
         return usernames;
     }
+
+    public UserDto findById(Long userId) {
+        User user = entityManager.find(User.class,userId);
+        UserDto userDto = new UserDto(user.getId(), user.getUsername(), user.getEmail(), user.getPassword());
+
+        return userDto;
+    }
+
+    public void deleteUsersByIds(Collection<Long> userIds){
+        LOG.info("deleteUsersByIds");
+
+        deleteUserRightsByIds(userIds);
+
+        for(Long userId : userIds){
+            User user = entityManager.find(User.class,userId);
+            entityManager.remove(user);
+        }
+    }
+
 }

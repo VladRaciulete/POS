@@ -43,4 +43,13 @@ public class CategoriesBean {
         }
         return categoryDto;
     }
+
+    public void createCategory(String name){
+        LOG.info("createCategory");
+
+        Category category = new Category();
+        category.setName(name);
+
+        entityManager.persist(category);
+    }
 }
