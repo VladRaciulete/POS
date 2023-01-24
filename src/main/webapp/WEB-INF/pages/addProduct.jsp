@@ -3,10 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:pageTemplate pageTitle="Add Product">
-
   <h1>Add Products</h1>
 
-  <form class="needs-validation" novalidate="" method="POST" action="${pageContext.request.contextPath}/AddProduct">
+  <form class="needs-validation" novalidate="" method="POST" action="${pageContext.request.contextPath}/AddProduct" enctype="multipart/form-data">
 
     <div class="row">
       <div class="col-md-6 mb-3">
@@ -38,10 +37,19 @@
             <option value="${category.id}" >${category.name}</option>
 
           </c:forEach>
-
         </select>
         <div class="invalid-feedback">
           Please select a valid category.
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="file" class="form-label">Photo</label>
+        <input type="file" name="file" id="file" required>
+        <div class="invalid-feedback">
+          Photo is required.
         </div>
       </div>
     </div>

@@ -1,9 +1,11 @@
 package com.pos.pos.ejb;
 
 import com.pos.pos.common.ProductDto;
+import com.pos.pos.common.ProductPhotoDto;
 import com.pos.pos.common.ProductsByCategoryDto;
 import com.pos.pos.entities.Category;
 import com.pos.pos.entities.Product;
+import com.pos.pos.entities.ProductPhoto;
 import jakarta.ejb.EJBException;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -34,6 +36,16 @@ public class ProductsBean {
             throw new EJBException(ex);
         }
     }
+
+    public Long findProductIdByProductName(String name) {
+        List <Long> productIds = entityManager.createQuery("SELECT p.id FROM Product p WHERE p.name LIKE :inputName",Long.class)
+                .setParameter("inputName",name)
+                .getResultList();
+
+        Long productId = productIds.get(0);
+        return productId;
+    }
+
 
     private List<ProductDto> copyProductsToDto(List<Product> products){
         List<ProductDto> productsDto = new ArrayList<>();
@@ -125,5 +137,33 @@ public class ProductsBean {
             Product product = entityManager.find(Product.class,productId);
             entityManager.remove(product);
         }
+    }
+
+    public void addPhotoToProduct(Long productId, String fileName, String fileType, byte[] fileContent) {
+        LOG.info("addPhotoToProduct");
+        ProductPhoto photo = new ProductPhoto();
+        photo.setFileName(fileName);
+        photo.setFileType(fileType);
+        photo.setFileContent(fileContent);
+        Product product = entityManager.find(Product.class, productId);
+        if (product.getPhoto() != null) {
+            entityManager.remove(product.getPhoto());
+        }
+        product.setPhoto(photo);
+        photo.setProduct(product);
+        entityManager.persist(photo);
+    }
+
+    public ProductPhotoDto findPhotoByCarId(Integer productId) {
+        List<ProductPhoto> photos = entityManager
+                .createQuery("SELECT p FROM ProductPhoto p where p.product.id = :id", ProductPhoto.class)
+                .setParameter("id", productId)
+                .getResultList();
+        if (photos.isEmpty()) {
+            return null;
+        }
+        ProductPhoto photo = photos.get(0); // the first element
+        return new ProductPhotoDto(photo.getId(), photo.getFileName(), photo.getFileType(),
+                photo.getFileContent());
     }
 }

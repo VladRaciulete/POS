@@ -16,10 +16,10 @@ import javax.print.attribute.IntegerSyntax;
 import java.io.IOException;
 import java.util.List;
 
-@DeclareRoles({"ADMIN"})
-@ServletSecurity(value = @HttpConstraint(rolesAllowed = {"ADMIN"}),
+@DeclareRoles({"ADMIN","DIRECTOR"})
+@ServletSecurity(value = @HttpConstraint(rolesAllowed = {"ADMIN","DIRECTOR"}),
         httpMethodConstraints = {@HttpMethodConstraint(value = "POST", rolesAllowed =
-                {"ADMIN"})})
+                {"ADMIN","DIRECTOR"})})
 @WebServlet(name = "EditProduct", value = "/EditProduct")
 public class EditProduct extends HttpServlet {
 

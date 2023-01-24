@@ -1,6 +1,7 @@
 package com.pos.pos.servlets;
 
 import com.pos.pos.ejb.CategoriesBean;
+import jakarta.annotation.security.DeclareRoles;
 import jakarta.inject.Inject;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -8,6 +9,10 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
+@DeclareRoles({"ADMIN","DIRECTOR"})
+@ServletSecurity(value = @HttpConstraint(rolesAllowed = {"ADMIN","DIRECTOR"}),
+        httpMethodConstraints = {@HttpMethodConstraint(value = "POST", rolesAllowed =
+                {"ADMIN","DIRECTOR"})})
 @WebServlet(name = "AddCategory", value = "/AddCategory")
 public class AddCategory extends HttpServlet {
 

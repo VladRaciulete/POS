@@ -1,3 +1,3 @@
-<footer class="container">
-  <p style="position:absolute; top:100%; text-align: center;">&copy; 2022<a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+<footer class="container mt-auto">
+  <p class="d-flex justify-content-center" style="margin-top: auto;">&copy; 2022 - POS</p>
 </footer>

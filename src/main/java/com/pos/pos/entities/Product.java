@@ -9,6 +9,8 @@ public class Product {
     private Category category;
     private int quantity;
 
+    private ProductPhoto photo;
+
     public void setId(Long id) { this.id = id; }
 
     @Id
@@ -41,5 +43,14 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public ProductPhoto getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(ProductPhoto photo) {
+        this.photo = photo;
     }
 }

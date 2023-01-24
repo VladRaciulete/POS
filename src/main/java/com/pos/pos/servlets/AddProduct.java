@@ -13,10 +13,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-@DeclareRoles({"ADMIN"})
-@ServletSecurity(value = @HttpConstraint(rolesAllowed = {"ADMIN"}),
+@DeclareRoles({"ADMIN","DIRECTOR"})
+@ServletSecurity(value = @HttpConstraint(rolesAllowed = {"ADMIN","DIRECTOR"}),
         httpMethodConstraints = {@HttpMethodConstraint(value = "POST", rolesAllowed =
-                {"ADMIN"})})
+                {"ADMIN","DIRECTOR"})})
+@MultipartConfig
 @WebServlet(name = "AddProduct", value = "/AddProduct")
 public class AddProduct extends HttpServlet {
 
@@ -40,6 +41,18 @@ public class AddProduct extends HttpServlet {
         Long category_id = Long.parseLong(request.getParameter("category_id"));
 
         productsBean.createProduct(name, quantity,category_id);
+
+        //////////Long productId = Long.parseLong(request.getParameter("product_id"));
+        Long productId = productsBean.findProductIdByProductName(name);
+
+        Part filePart = request.getPart("file");
+        String fileName = filePart.getSubmittedFileName();
+        String fileType = filePart.getContentType();
+        long fileSize = filePart.getSize();
+        byte[] fileContent = new byte[(int) fileSize];
+        filePart.getInputStream().read(fileContent);
+
+        productsBean.addPhotoToProduct(productId,fileName,fileType,fileContent);
 
         response.sendRedirect(request.getContextPath() + "/Products");
     }

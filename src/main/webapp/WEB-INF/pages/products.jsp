@@ -2,66 +2,86 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:pageTemplate pageTitle="Products">
-  <h1>Those are the available products!</h1>
-
-
+  <br>
     <form method="POST" action="${pageContext.request.contextPath}/Products">
-      <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
-        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/AddProduct">Add Product</a>
-        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/AddCategory">Add Category</a>
-        <button class="btn btn-danger" type="submit">Delete products</button>
+
+      <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
+        <div class="row">
+          <div class="col d-flex justify-content-center">
+            <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/AddProduct">Add Product</a>
+          </div>
+
+          <div class="col d-flex justify-content-center">
+            <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/AddCategory">Add Category</a>
+          </div>
+
+          <div class="col d-flex justify-content-center">
+            <button class="btn btn-danger" type="submit">Delete products</button>
+          </div>
+        </div>
       </c:if>
 
-      <div class="container text-center">
-        <div class="row">
+    <br>
 
-          <c:forEach var="elem" items="${productsByCategoryList}">
+      <div class="container text-center">
+
+            <c:forEach var="elem" items="${productsByCategoryList}">
 
             <h2>${elem.categoryName}</h2>
 
-            <c:forEach var="product" items="${elem.products}">
+            <div class="row">
+              <c:forEach var="product" items="${elem.products}">
 
-              <div class="border border-dark col-3">
-                <div class="row">
+                <div class="col-4 border border-dark pt-1 pb-1">
 
-                  <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
-                    <div class="col">
-                      <div class="row">
-                        <input type="checkbox" name="product_ids" value="${product.id}">
+                  <div class="row">
+
+                    <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
+                      <div class="col d-flex justify-content-center">
+                        <div class="col d-flex justify-content-center">
+                          <input type="checkbox" name="product_ids" value="${product.id}">
+                        </div>
                       </div>
+                    </c:if>
 
-                      <div class="row">
-                        <a class="btn btn-secondary" href="${pageContext.request.contextPath}/EditProduct?id=${product.id}">Edit Product</a>
+                    <div class="col d-flex justify-content-center">
+                      <div>
+                        <img src="${pageContext.request.contextPath}/ProductPhotos?id=${product.id}" width="128">
                       </div>
                     </div>
-                  </c:if>
-
-                  <div class="col">
-
-                    <div class="row">
-                      POZA
-                    </div>
-
-                    <div class="row">
-                        ${product.name}
-                    </div>
-
-                  <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
-                    <div class="row">
-                       quantity=${product.quantity}
-                    </div>
-                  </c:if>
 
                   </div>
-                </div>
-              </div>
 
-            </c:forEach>
-                <br>
-                <br>
+
+
+                  <div class="row">
+
+                    <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
+                      <div class="col d-flex justify-content-center">
+                        <div class="col d-flex justify-content-center">
+                          <a class="btn btn-secondary" href="${pageContext.request.contextPath}/EditProduct?id=${product.id}">Edit</a>
+                        </div>
+                      </div>
+                    </c:if>
+
+                    <div class="col d-flex justify-content-center">
+                        ${product.name}
+                          <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
+                        = ${product.quantity}
+                      </c:if>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </c:forEach>
+            </div>
+            <p><br></p>
+            <p class="bg-dark"><br></p>
           </c:forEach>
 
-        </div>
       </div>
+
     </form>
 </t:pageTemplate>

@@ -10,6 +10,7 @@
           <class>com.pos.pos.entities.User</class>
           <class>com.pos.pos.entities.Category</class>
           <class>com.pos.pos.entities.UserGroup</class>
+          <class>com.pos.pos.entities.ProductPhoto</class>
 
           <properties>
               <property name="jakarta.persistence.schema-generation.database.action" value="create-or-extend-tables" />
