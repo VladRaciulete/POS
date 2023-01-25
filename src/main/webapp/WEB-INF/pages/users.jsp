@@ -24,25 +24,27 @@
 
         <div class="container text-center">
             <c:forEach var="user" items="${users}">
-                <div class="row mb-1">
-                    <div class="col">
-                        <input type="checkbox" name="user_ids" value="${user.id}">
-                    </div>
-
-                    <div class="col">
-                            ${user.username}
-                    </div>
-
-                    <div class="col">
-                            ${user.email}
-                    </div>
-
-                    <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+                <c:if test="${user.username != pageContext.request.getRemoteUser()}">
+                    <div class="row mb-1">
                         <div class="col">
-                            <a class="btn btn-secondary" href="${pageContext.request.contextPath}/EditUser?id=${user.id}">Edit User</a>
+                            <input type="checkbox" name="user_ids" value="${user.id}">
                         </div>
-                    </c:if>
-                </div>
+
+                        <div class="col">
+                                ${user.username}
+                        </div>
+
+                        <div class="col">
+                                ${user.email}
+                        </div>
+
+                        <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+                            <div class="col">
+                                <a class="btn btn-secondary" href="${pageContext.request.contextPath}/EditUser?id=${user.id}">Edit User</a>
+                            </div>
+                        </c:if>
+                    </div>
+                </c:if>
             </c:forEach>
 
         </div>

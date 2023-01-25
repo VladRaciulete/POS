@@ -27,58 +27,62 @@
 
             <c:forEach var="elem" items="${productsByCategoryList}">
 
-            <h2>${elem.categoryName}</h2>
+              <c:if test="${elem != null}">
 
-            <div class="row">
-              <c:forEach var="product" items="${elem.products}">
+              <h2>${elem.categoryName}</h2>
 
-                <div class="col-4 border border-dark pt-1 pb-1">
+              <div class="row">
+                <c:forEach var="product" items="${elem.products}">
 
-                  <div class="row">
+                  <div class="col-4 border border-dark pt-1 pb-1">
 
-                    <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
-                      <div class="col d-flex justify-content-center">
+                    <div class="row">
+
+                      <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
                         <div class="col d-flex justify-content-center">
-                          <input type="checkbox" name="product_ids" value="${product.id}">
+                          <div class="col d-flex justify-content-center">
+                            <input type="checkbox" name="product_ids" value="${product.id}">
+                          </div>
                         </div>
-                      </div>
-                    </c:if>
-
-                    <div class="col d-flex justify-content-center">
-                      <div>
-                        <img src="${pageContext.request.contextPath}/ProductPhotos?id=${product.id}" width="128">
-                      </div>
-                    </div>
-
-                  </div>
-
-
-
-                  <div class="row">
-
-                    <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
-                      <div class="col d-flex justify-content-center">
-                        <div class="col d-flex justify-content-center">
-                          <a class="btn btn-secondary" href="${pageContext.request.contextPath}/EditProduct?id=${product.id}">Edit</a>
-                        </div>
-                      </div>
-                    </c:if>
-
-                    <div class="col d-flex justify-content-center">
-                        ${product.name}
-                          <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
-                        = ${product.quantity}
                       </c:if>
+
+                      <div class="col d-flex justify-content-center">
+                        <div>
+                          <img src="${pageContext.request.contextPath}/ProductPhotos?id=${product.id}" width="128">
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+
+                      <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
+                        <div class="col d-flex justify-content-center">
+                          <div class="col d-flex justify-content-center">
+                            <a class="btn btn-secondary" href="${pageContext.request.contextPath}/EditProduct?id=${product.id}">Edit</a>
+                          </div>
+                        </div>
+                      </c:if>
+
+                      <div class="col d-flex justify-content-center">
+                          ${product.name}
+                            <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
+                          = ${product.quantity}
+                        </c:if>
+                      </div>
+
                     </div>
 
                   </div>
 
-                </div>
+                </c:forEach>
+              </div>
+              <p><br></p>
+              <p class="bg-dark"><br></p>
+            </c:if>
 
-              </c:forEach>
-            </div>
-            <p><br></p>
-            <p class="bg-dark"><br></p>
           </c:forEach>
 
       </div>

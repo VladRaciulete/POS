@@ -3,6 +3,7 @@ package com.pos.pos.servlets;
 import com.pos.pos.common.CategoryDto;
 import com.pos.pos.common.ProductDto;
 import com.pos.pos.common.ProductsByCategoryDto;
+import com.pos.pos.common.UserDto;
 import com.pos.pos.ejb.CategoriesBean;
 import com.pos.pos.ejb.ProductsBean;
 import com.pos.pos.entities.Category;
@@ -38,8 +39,6 @@ public class Products extends HttpServlet {
         }
 
         request.setAttribute("productsByCategoryList", productsByCategoryList);
-
-
         request.setAttribute("activePage","Products");
         request.getRequestDispatcher("/WEB-INF/pages/products.jsp").forward(request,response);
     }

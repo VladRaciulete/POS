@@ -36,6 +36,12 @@
 
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                    <c:if test="${pageContext.request.getRemoteUser() != null}">
+                        <p class="nav-link m-0 text-white">${pageContext.request.getRemoteUser()}    </p>
+                    </c:if>
+                    </li>
+
+                    <li class="nav-item">
                         <c:choose>
                             <c:when test="${pageContext.request.getRemoteUser() == null}">
                                 <a class="nav-link" href="${pageContext.request.contextPath}/Login">Login</a>
