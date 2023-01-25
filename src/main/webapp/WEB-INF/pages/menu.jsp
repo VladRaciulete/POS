@@ -18,6 +18,12 @@
                         </li>
                     </c:if>
 
+                    <c:if test="${pageContext.request.isUserInRole('DIRECTOR')}">
+                        <li class="nav-item">
+                            <a class="nav-link ${activePage eq 'Validate' ? 'active' : ''}" aria-current="page" href="${pageContext.request.contextPath}/Cashiers">Cashiers</a>
+                        </li>
+                    </c:if>
+
                     <li class="nav-item">
                         <a class="nav-link ${activePage eq 'Products' ? 'active' : ''}" aria-current="page" href="${pageContext.request.contextPath}/Products">Products</a>
                     </li>

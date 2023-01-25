@@ -6,11 +6,12 @@ import jakarta.persistence.Id;
 
 @Entity
 public class UserGroup {
+
     private Long id;
-
     private String username;
-
+    private Long userId;
     private String userGroup;
+
 
     public void setId(Long id) {
         this.id = id;
@@ -36,5 +37,13 @@ public class UserGroup {
 
     public void setUserGroup(String userGroup) {
         this.userGroup = userGroup;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

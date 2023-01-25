@@ -1,6 +1,7 @@
 package com.pos.pos.ejb;
 
 import com.pos.pos.common.UserDto;
+import com.pos.pos.entities.ProductPhoto;
 import com.pos.pos.entities.User;
 import com.pos.pos.entities.UserGroup;
 import jakarta.ejb.EJBException;
@@ -97,10 +98,20 @@ public class UsersBean {
 
     private void assignGroupsToUser(String username, Collection<String> groups) {
         LOG.info("assignGroupsToUser");
+
+        List<User> users = entityManager
+                .createQuery("SELECT u FROM User u WHERE u.username = :name", User.class)
+                .setParameter("name", username)
+                .getResultList();
+
+        User newUser = users.get(0);
+        Long userId = newUser.getId();
+
         for (String group : groups) {
             UserGroup userGroup = new UserGroup();
             userGroup.setUsername(username);
             userGroup.setUserGroup(group);
+            userGroup.setUserId(userId);
             entityManager.persist(userGroup);
         }
     }
@@ -130,4 +141,58 @@ public class UsersBean {
         }
     }
 
+    public List<UserDto> findAllInvalidCashiers() {
+        LOG.info("findAllInvalidCashiers");
+        try{
+            List<Long> cashierIds = entityManager
+                    .createQuery("SELECT u.userId FROM UserGroup u WHERE u.userGroup = :name", Long.class)
+                    .setParameter("name", "CASHIER")
+                    .getResultList();
+
+            TypedQuery<User> typedQuery = entityManager.createQuery("SELECT u FROM User u", User.class);
+            List<User> users = typedQuery.getResultList();
+            List<User> invalidCashiers = new ArrayList<>();
+
+            for(Long cashierId : cashierIds){
+                for(User user : users){
+                    if(cashierId.equals(user.getId())){
+                        invalidCashiers.add(user);
+                    }
+                }
+            }
+            return copyUsersToDto(invalidCashiers);
+        }
+        catch(Exception ex){
+            throw new EJBException(ex);
+        }
+    }
+
+    public List<UserDto> findAllValidCashiers() {
+        LOG.info("findAllValidCashiers");
+        try{
+            List<Long> cashierIds = entityManager
+                    .createQuery("SELECT u.userId FROM UserGroup u WHERE u.userGroup = :name", Long.class)
+                    .setParameter("name", "VALID_CASHIER")
+                    .getResultList();
+
+            List<User> users = entityManager
+                    .createQuery("SELECT c FROM User c", User.class)
+                    .getResultList();
+
+
+            List<User> validCashiers = new ArrayList<>();
+
+            for(Long cashierId : cashierIds){
+                for(User user : users){
+                    if(cashierId.equals(user.getId())){
+                        validCashiers.add(user);
+                    }
+                }
+            }
+            return copyUsersToDto(validCashiers);
+        }
+        catch(Exception ex){
+            throw new EJBException(ex);
+        }
+    }
 }

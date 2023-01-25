@@ -156,7 +156,7 @@ public class ProductsBean {
 
     public ProductPhotoDto findPhotoByCarId(Integer productId) {
         List<ProductPhoto> photos = entityManager
-                .createQuery("SELECT p FROM ProductPhoto p where p.product.id = :id", ProductPhoto.class)
+                .createQuery("SELECT p FROM ProductPhoto p WHERE p.product.id = :id", ProductPhoto.class)
                 .setParameter("id", productId)
                 .getResultList();
         if (photos.isEmpty()) {

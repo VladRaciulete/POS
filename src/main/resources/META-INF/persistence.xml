@@ -11,6 +11,7 @@
           <class>com.pos.pos.entities.Category</class>
           <class>com.pos.pos.entities.UserGroup</class>
           <class>com.pos.pos.entities.ProductPhoto</class>
+          <class>com.pos.pos.entities.ValidCashiers</class>
 
           <properties>
               <property name="jakarta.persistence.schema-generation.database.action" value="create-or-extend-tables" />
