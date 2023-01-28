@@ -9,6 +9,7 @@ public class Product {
     private Category category;
     private int quantity;
 
+    private double price;
     private ProductPhoto photo;
 
     public void setId(Long id) { this.id = id; }
@@ -53,4 +54,8 @@ public class Product {
     public void setPhoto(ProductPhoto photo) {
         this.photo = photo;
     }
+
+    public double getPrice() { return price; }
+
+    public void setPrice(double price) { this.price = price; }
 }

@@ -45,14 +45,28 @@ public class Products extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String[] productIdsAsString = request.getParameterValues("product_ids");
+        String[] productIdsAsString = request.getParameterValues("delete_product_ids");
         if(productIdsAsString != null){
             List<Long> productIds = new ArrayList<>();
             for(String productIdAsString : productIdsAsString){
                 productIds.add(Long.parseLong(productIdAsString));
             }
             productsBean.deleteProductsByIds(productIds);
+
+            response.sendRedirect(request.getContextPath() + "/Products");
         }
-        response.sendRedirect(request.getContextPath() + "/Products");
+
+
+        String[] buyProductIdsAsString = request.getParameterValues("buy_product_ids");
+        if(buyProductIdsAsString != null){
+            List<Long> buyProductIds = new ArrayList<>();
+            for(String buyProductIdAsString : buyProductIdsAsString){
+                buyProductIds.add(Long.parseLong(buyProductIdAsString));
+            }
+            productsBean.deleteProductsByIds(buyProductIds);
+
+            response.sendRedirect(request.getContextPath() + "/Buy");
+        }
+
     }
 }

@@ -21,6 +21,12 @@
         </div>
       </c:if>
 
+      <c:if test="${!pageContext.request.isUserInRole('ADMIN') && !pageContext.request.isUserInRole('DIRECTOR') && !pageContext.request.isUserInRole('VALID_CASHIER') && !pageContext.request.isUserInRole('CASHIER')}">
+        <div class="col d-flex justify-content-end">
+          <button class="btn btn-success" type="submit">Go to checkout</button>
+        </div>
+      </c:if>
+
     <br>
 
       <div class="container text-center">
@@ -39,16 +45,21 @@
                     <div class="row">
 
                       <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
-                        <div class="col d-flex justify-content-center">
                           <div class="col d-flex justify-content-center">
-                            <input type="checkbox" name="product_ids" value="${product.id}">
+                            <input type="checkbox" name="delete_product_ids" value="${product.id}">
                           </div>
+                      </c:if>
+
+                      <c:if test="${!pageContext.request.isUserInRole('ADMIN') && !pageContext.request.isUserInRole('DIRECTOR') && !pageContext.request.isUserInRole('VALID_CASHIER') && !pageContext.request.isUserInRole('CASHIER')}">
+                        <div class="col d-flex justify-content-center">
+                              <input type="checkbox" name="buy_product_ids" value="${product.id}">
                         </div>
                       </c:if>
 
+
                       <div class="col d-flex justify-content-center">
                         <div>
-                          <img src="${pageContext.request.contextPath}/ProductPhotos?id=${product.id}" width="128">
+                          <img src="${pageContext.request.contextPath}/ProductPhotos?id=${product.id}" alt="." width="128">
                         </div>
                       </div>
 
@@ -67,10 +78,11 @@
                       </c:if>
 
                       <div class="col d-flex justify-content-center">
-                          ${product.name}
+
+                          $${product.price} ${product.name}
                             <c:if test="${pageContext.request.isUserInRole('ADMIN') || pageContext.request.isUserInRole('DIRECTOR')}">
                           = ${product.quantity}
-                        </c:if>
+                          </c:if>
                       </div>
 
                     </div>

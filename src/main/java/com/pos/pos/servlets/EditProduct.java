@@ -46,9 +46,10 @@ public class EditProduct extends HttpServlet {
         Long productId = Long.parseLong(request.getParameter("product_id"));
         String name = request.getParameter("name");
         int quantity = Integer.parseInt(request.getParameter("quantity"));
+        double price = Double.parseDouble(request.getParameter("price"));
         Long categoryId = Long.parseLong(request.getParameter("category_id"));
 
-        productsBean.updateProduct(productId, name, quantity, categoryId);
+        productsBean.updateProduct(productId, name, quantity, price, categoryId);
         response.sendRedirect(request.getContextPath() + "/Products");
     }
 }

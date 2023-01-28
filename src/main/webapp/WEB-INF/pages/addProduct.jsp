@@ -29,6 +29,16 @@
 
     <div class="row">
       <div class="col-md-6 mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="text" class="form-control" name="price" id="price" placeholder="" value="" required>
+        <div class="invalid-feedback">
+          Valid price is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
         <label for="category_id" class="form-label">Category</label>
         <select class="form-select" name="category_id" id="category_id" required>
           <option value="">Choose...</option>

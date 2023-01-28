@@ -53,7 +53,7 @@ public class ProductsBean {
         Category category;
         for(Product elem : products){
             category = elem.getCategory();
-            var = new ProductDto(elem.getId(), elem.getName(), elem.getQuantity(), category);
+            var = new ProductDto(elem.getId(), elem.getName(), elem.getQuantity(), elem.getPrice(), category);
             productsDto.add(var);
         }
         return productsDto;
@@ -76,8 +76,8 @@ public class ProductsBean {
         List<ProductDto> ProductDtoList = new ArrayList<>();
         Category category = null;
         for(Product elem : products){
-            if (elem.getCategory().getId() == categoryId){
-                productDto = new ProductDto(elem.getId(), elem.getName(), elem.getQuantity(), elem.getCategory());
+            if (categoryId.equals(elem.getCategory().getId())){
+                productDto = new ProductDto(elem.getId(), elem.getName(), elem.getQuantity(), elem.getPrice(), elem.getCategory());
                 category = elem.getCategory();
                 ProductDtoList.add(productDto);
 
@@ -92,11 +92,12 @@ public class ProductsBean {
 
 
 
-    public void createProduct(String name,int quantity, Long category_id){
+    public void createProduct(String name,int quantity, double price, Long category_id){
         LOG.info("createProduct");
 
         Product product = new Product();
         product.setName(name);
+        product.setPrice(price);
         product.setQuantity(quantity);
 
         Category category = entityManager.find(Category.class,category_id);
@@ -110,16 +111,17 @@ public class ProductsBean {
         Product product = entityManager.find(Product.class,productId);
         Category category = product.getCategory();
 
-        ProductDto productDto = new ProductDto(product.getId(), product.getName(), product.getQuantity(), category);
+        ProductDto productDto = new ProductDto(product.getId(), product.getName(), product.getQuantity(), product.getPrice(), category);
 
         return productDto;
     }
 
-    public void updateProduct(Long productId, String name, int quantity, Long categoryId) {
+    public void updateProduct(Long productId, String name,int quantity, double price, Long categoryId){
         LOG.info("updateProduct");
 
         Product product = entityManager.find(Product.class,productId);
         product.setName(name);
+        product.setPrice(price);
         product.setQuantity(quantity);
 
         Category oldCategory = product.getCategory();

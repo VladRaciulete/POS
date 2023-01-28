@@ -38,9 +38,10 @@ public class AddProduct extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         int quantity = Integer.parseInt(request.getParameter("quantity"));
+        double price = Double.parseDouble(request.getParameter("price"));
         Long category_id = Long.parseLong(request.getParameter("category_id"));
 
-        productsBean.createProduct(name, quantity,category_id);
+        productsBean.createProduct(name, quantity, price, category_id);
 
         //////////Long productId = Long.parseLong(request.getParameter("product_id"));
         Long productId = productsBean.findProductIdByProductName(name);
