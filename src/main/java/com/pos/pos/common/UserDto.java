@@ -1,6 +1,7 @@
 package com.pos.pos.common;
 
 public class UserDto {
+    //Obiect de transfer pentru user
     Long id;
     String username;
     String email;

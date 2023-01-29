@@ -3,6 +3,7 @@ package com.pos.pos.common;
 import com.pos.pos.entities.Category;
 
 public class ProductDto {
+    //Obiect de transfer pentru produs
     Long id;
     String name;
     int quantity;

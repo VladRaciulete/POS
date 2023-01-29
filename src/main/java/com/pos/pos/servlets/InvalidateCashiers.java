@@ -23,12 +23,20 @@ public class InvalidateCashiers extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Pune parametrul primit prin GET(din URL) in cashierId
         Long cashierId = Long.parseLong(request.getParameter("id"));
+
+        //Adauga grupul de acces "CASHIER" in lista
         List<String> userGroups = new ArrayList<>();
         userGroups.add("CASHIER");
+
+        //Cauta casierul corespunzator id-ului
         UserDto cashier = usersBean.findById(cashierId);
+
+        //Apeleaza metoda updateUser cu parametrii userului(casierului) precedent si usergroup-ul modificat
         usersBean.updateUser(cashierId, cashier.getUsername(), cashier.getEmail(), cashier.getPassword(), userGroups);
 
+        //Face forward catre servletul Cashiers
         response.sendRedirect(request.getContextPath() + "/Cashiers");
     }
 

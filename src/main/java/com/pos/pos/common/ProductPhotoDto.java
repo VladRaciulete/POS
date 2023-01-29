@@ -1,6 +1,7 @@
 package com.pos.pos.common;
 
 public class ProductPhotoDto {
+    //Obiect de transfer pentru poza produsului
     private Long id;
     private String fileName;
     private String fileType;

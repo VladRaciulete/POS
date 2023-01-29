@@ -23,12 +23,15 @@ public class Cashiers extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Cauta toti casierii care nu au fost validati si ii trimite catre jsp
         List<UserDto> invalidCashiers = usersBean.findAllInvalidCashiers();
         request.setAttribute("invalidCashiers",invalidCashiers);
 
+        //Cauta toti casierii validati si ii trimite catre jsp
         List<UserDto> validCashiers = usersBean.findAllValidCashiers();
         request.setAttribute("validCashiers",validCashiers);
 
+        //Face forward catre cashiers.jsp
         request.getRequestDispatcher("/WEB-INF/pages/cashiers.jsp").forward(request,response);
     }
 

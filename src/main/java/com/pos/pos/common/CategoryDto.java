@@ -1,6 +1,7 @@
 package com.pos.pos.common;
 
 public class CategoryDto {
+    //Obiect de transfer pentru categorie
 
     private Long id;
     private String name;

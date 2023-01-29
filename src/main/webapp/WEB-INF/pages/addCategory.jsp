@@ -5,7 +5,7 @@
 <t:pageTemplate pageTitle="Add Category">
 
     <h1>Add Category</h1>
-
+    <!-- Form pentru adaugarea unei categorii -->
     <form class="needs-validation" novalidate="" method="POST" action="${pageContext.request.contextPath}/AddCategory">
 
         <div class="row">

@@ -6,9 +6,9 @@
     <br>
     <h1 class="text-center">Users</h1>
     <br>
-
-    <form method="POST" action="${pageContext.request.contextPath}/Users">
-        <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+    <!-- Form pentru afisarea userilor(Se afiseaza doar daca grupul de acces al userului conectat e ADMIN)-->
+    <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+        <form method="POST" action="${pageContext.request.contextPath}/Users">
             <div class="row">
                 <div class="col d-flex justify-content-center">
                     <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/AddUser">Add user</a>
@@ -18,38 +18,35 @@
                     <button class="btn btn-danger" type="submit">Delete users</button>
                 </div>
             </div>
-        </c:if>
 
-        <br>
+            <br>
 
-        <div class="container text-center">
-            <c:forEach var="user" items="${users}">
-                <c:if test="${user.username != pageContext.request.getRemoteUser()}">
-                    <div class="row mb-1">
-                        <div class="col">
-                            <input type="checkbox" name="user_ids" value="${user.id}">
-                        </div>
+            <div class="container text-center">
+                <c:forEach var="user" items="${users}">
 
-                        <div class="col">
-                                ${user.username}
-                        </div>
+                    <!-- Daca username-ul userului din lista e cel al userului conectat nu afiseaza userul -->
+                    <c:if test="${user.username != pageContext.request.getRemoteUser()}">
+                        <div class="row mb-1">
+                            <div class="col">
+                                <input type="checkbox" name="user_ids" value="${user.id}">
+                            </div>
 
-                        <div class="col">
-                                ${user.email}
-                        </div>
+                            <div class="col">
+                                    ${user.username}
+                            </div>
 
-                        <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+                            <div class="col">
+                                    ${user.email}
+                            </div>
+
                             <div class="col">
                                 <a class="btn btn-secondary" href="${pageContext.request.contextPath}/EditUser?id=${user.id}">Edit User</a>
                             </div>
-                        </c:if>
-                    </div>
-                </c:if>
-            </c:forEach>
-
-        </div>
-
-    </form>
-
+                        </div>
+                    </c:if>
+                </c:forEach>
+            </div>
+        </form>
+    </c:if>
 </t:pageTemplate>
 

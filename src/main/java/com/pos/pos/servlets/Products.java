@@ -27,46 +27,44 @@ public class Products extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //List<ProductDto> products = productsBean.findAllProducts();
-        //request.setAttribute("products", products);
-
         List<ProductsByCategoryDto> productsByCategoryList = new ArrayList<>();
+
+        //Cauta toate categoriile
         List<CategoryDto> categories = categoryBean.findAllCategories();
 
         for(CategoryDto category : categories){
+            //Pentru fiecare categorie cauta produsele categoriei respective
             ProductsByCategoryDto productsByCategoryDto = productsBean.findAllProductsByCategoryId(category.getId());
+
+            //Adauga obiectul productsByCategoryDto in lista de productsByCategoryDto
             productsByCategoryList.add(productsByCategoryDto);
         }
 
+        //Trimite catre jsp produsele dupa categorie
         request.setAttribute("productsByCategoryList", productsByCategoryList);
+
+        //Trimite catre jsp pagina activa (Products)
         request.setAttribute("activePage","Products");
+
+        //Face forward catre products.jsp
         request.getRequestDispatcher("/WEB-INF/pages/products.jsp").forward(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Pune id-urlie produselor selectate intr un vector de string
         String[] productIdsAsString = request.getParameterValues("delete_product_ids");
-        if(productIdsAsString != null){
+
+        if(productIdsAsString != null) {
             List<Long> productIds = new ArrayList<>();
-            for(String productIdAsString : productIdsAsString){
+            for (String productIdAsString : productIdsAsString) {
+                //Ia fiecare string din vector si il adauga in lista de id-uri
                 productIds.add(Long.parseLong(productIdAsString));
             }
+            //Sterge produsele
             productsBean.deleteProductsByIds(productIds);
-
-            response.sendRedirect(request.getContextPath() + "/Products");
         }
-
-
-        String[] buyProductIdsAsString = request.getParameterValues("buy_product_ids");
-        if(buyProductIdsAsString != null){
-            List<Long> buyProductIds = new ArrayList<>();
-            for(String buyProductIdAsString : buyProductIdsAsString){
-                buyProductIds.add(Long.parseLong(buyProductIdAsString));
-            }
-            productsBean.deleteProductsByIds(buyProductIds);
-
-            response.sendRedirect(request.getContextPath() + "/Buy");
-        }
-
+        //Face forward catre servletul Products
+        response.sendRedirect(request.getContextPath() + "/Products");
     }
 }

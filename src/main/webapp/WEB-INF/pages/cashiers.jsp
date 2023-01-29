@@ -13,6 +13,7 @@
         <div class="container text-center">
             <h4>INVALID CASHIERS</h4>
             <br>
+            <!-- Pentru fiecare casier din lista invalidCashiers afiseaza proprietatile -->
             <c:forEach var="cashier" items="${invalidCashiers}">
                 <div class="row mb-1">
 
@@ -29,6 +30,7 @@
                     </div>
 
                     <c:if test="${pageContext.request.isUserInRole('DIRECTOR')}">
+                        <!-- Daca userul conectat are grupul de acces DIRECTOR afiseaza butonul -->
                         <div class="col">
                             <a class="btn btn-secondary" href="${pageContext.request.contextPath}/ValidateCashiers?id=${cashier.id}">Validate Cashier</a>
                         </div>
@@ -45,6 +47,7 @@
             <h4>VALID CASHIERS</h4>
             <br>
             <c:forEach var="cashier" items="${validCashiers}">
+                <!-- Pentru fiecare casier din lista validCashiers afiseaza proprietatile -->
                 <div class="row mb-1">
                     <div class="col">
                             ${cashier.id}
@@ -59,6 +62,7 @@
                     </div>
 
                     <c:if test="${pageContext.request.isUserInRole('DIRECTOR')}">
+                        <!-- Daca userul conectat are grupul de acces DIRECTOR afiseaza butonul -->
                         <div class="col">
                             <a class="btn btn-secondary" href="${pageContext.request.contextPath}/InvalidateCashiers?id=${cashier.id}">Invalidate Cashier</a>
                         </div>
@@ -67,7 +71,6 @@
                 </div>
             </c:forEach>
         </div>
-
     </form>
 
     <script src="form-validation.js"></script>

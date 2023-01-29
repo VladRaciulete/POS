@@ -5,6 +5,7 @@ import com.pos.pos.entities.Product;
 import java.util.List;
 
 public class ProductsByCategoryDto {
+    //Obiect de transfer pentru produsele luate in functie de categorie
 
     private Long categoryId;
 

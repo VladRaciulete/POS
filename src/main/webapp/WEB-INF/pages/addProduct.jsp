@@ -4,7 +4,7 @@
 
 <t:pageTemplate pageTitle="Add Product">
   <h1>Add Products</h1>
-
+  <!-- Form pentru adaugarea unui produs -->
   <form class="needs-validation" novalidate="" method="POST" action="${pageContext.request.contextPath}/AddProduct" enctype="multipart/form-data">
 
     <div class="row">
@@ -42,11 +42,13 @@
         <label for="category_id" class="form-label">Category</label>
         <select class="form-select" name="category_id" id="category_id" required>
           <option value="">Choose...</option>
-          <c:forEach var="category" items="${categories}" varStatus="status">
 
+          <c:forEach var="category" items="${categories}" varStatus="status">
+            <!-- Afiseaza toate categoriile primite de la servlet -->
             <option value="${category.id}" >${category.name}</option>
 
           </c:forEach>
+
         </select>
         <div class="invalid-feedback">
           Please select a valid category.

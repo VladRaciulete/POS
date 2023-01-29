@@ -3,9 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:pageTemplate pageTitle="Edit Product">
-
   <h1>Edit product</h1>
-
+  <!-- Form pentru editarea unui produs -->
   <form class="needs-validation" novalidate="" method="POST" action="${pageContext.request.contextPath}/EditProduct">
 
     <div class="row">
@@ -44,7 +43,7 @@
         <select class="form-select" name="category_id" id="category_id" required>
           <option value="">Choose...</option>
           <c:forEach var="category" items="${categories}" varStatus="status">
-
+            <!-- Afiseaza toate categoriile primite de la servlet -->
             <option value="${category.id}" ${product.name eq category.name ? 'selected' : ''}>${category.name}</option>
 
           </c:forEach>

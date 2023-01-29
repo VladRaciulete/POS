@@ -12,12 +12,14 @@
                         <a class="nav-link ${pageContext.request.requestURI.substring(pageContext.request.requestURI.lastIndexOf("/")) eq '/about.jsp' ? ' active' : ''}" aria-current="page" href="${pageContext.request.contextPath}/about.jsp">About</a>
                     </li>
 
+                    <!-- Testeaza daca userul conectat are grupul de acces ADMIN -->
                     <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
                         <li class="nav-item">
                             <a class="nav-link ${activePage eq 'Users' ? 'active' : ''}" aria-current="page" href="${pageContext.request.contextPath}/Users">Users</a>
                         </li>
                     </c:if>
 
+                    <!-- Testeaza daca userul conectat are grupul de acces DIRECTOR -->
                     <c:if test="${pageContext.request.isUserInRole('DIRECTOR')}">
                         <li class="nav-item">
                             <a class="nav-link ${activePage eq 'Validate' ? 'active' : ''}" aria-current="page" href="${pageContext.request.contextPath}/Cashiers">Cashiers</a>
@@ -44,22 +46,16 @@
                     <li class="nav-item">
                         <c:choose>
                             <c:when test="${pageContext.request.getRemoteUser() == null}">
+                                <!-- In cazul in care userul NU e conectat se afiseaza link catre LOGIN -->
                                 <a class="nav-link" href="${pageContext.request.contextPath}/Login">Login</a>
                             </c:when>
                             <c:otherwise>
+                                <!-- In cazul in care userul e conectat se afiseaza link catre LOGOUT -->
                                 <a class="nav-link" href="${pageContext.request.contextPath}/Logout">Logout</a>
                             </c:otherwise>
                         </c:choose>
                     </li>
                 </ul>
-
-
-
-
-
-
-
-
             </div>
         </div>
     </nav>

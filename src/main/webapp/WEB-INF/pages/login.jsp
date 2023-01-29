@@ -3,17 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:pageTemplate pageTitle="Login">
-
   <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>
 
+  <!-- Testeaza daca message este nul (daca a aparut o eroare la login) -->
   <c:if test="${message != null}">
-
     <div class="alert alert-warning" role="alert">
         ${message}
     </div>
-
   </c:if>
 
+  <!-- Login form-->
   <form class="form-signin" method="POST" action="j_security_check">
     <label for="username" class="sr-only">Username</label>
     <input type="text" id="username" name="j_username" class="form-control" placeholder="Username" required autofocus>

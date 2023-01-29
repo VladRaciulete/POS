@@ -21,16 +21,17 @@ public class AddCategory extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Face forward catre addCategory.jsp
         request.getRequestDispatcher("/WEB-INF/pages/addCategory.jsp").forward(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Ia parametrul primit din form si creeaza noua categorie
         String name = request.getParameter("name");
-
-
         categoriesBean.createCategory(name);
 
+        //Face forward catre servletul Products
         response.sendRedirect(request.getContextPath() + "/Products");
     }
 }

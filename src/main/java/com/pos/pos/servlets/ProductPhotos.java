@@ -17,9 +17,14 @@ public class ProductPhotos extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer photoId = Integer.parseInt(request.getParameter("id"));
-        ProductPhotoDto photo = productsBean.findPhotoByCarId(photoId);
+        //Pune parametrul primit prin GET(din URL) in photoId
+        Long productId = Long.parseLong(request.getParameter("id"));
+
+        //Cauta poza dupa id ul primit
+        ProductPhotoDto photo = productsBean.findPhotoByProductId(productId);
+
         if(photo != null) {
+            //Seteaza proprietatile pozei
             response.setContentType(photo.getFileType());
             response.setContentLength(photo.getFileContent().length);
             response.getOutputStream().write(photo.getFileContent());

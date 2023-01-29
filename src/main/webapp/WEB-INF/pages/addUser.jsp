@@ -3,9 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:pageTemplate pageTitle="Add User">
-
   <h1>Add user</h1>
-
+  <!-- Form pentru adaugarea unui user -->
   <form class="needs-validation" novalidate="" method="POST" action="${pageContext.request.contextPath}/AddUser">
 
     <div class="row">
@@ -43,7 +42,7 @@
         <label for="user_groups" class="form-label">Groups</label>
         <select class="custom-select d-block w-100" name="user_groups" id="user_groups" multiple>
           <c:forEach var="user_group" items="${userGroups}" varStatus="status">
-
+            <!-- Afiseaza toate grupurile de acces primite de la servlet -->
             <option value="${user_group}" >${user_group}</option>
 
           </c:forEach>
