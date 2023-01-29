@@ -150,7 +150,7 @@
                     </div>
                   </c:if>
 
-                  < %-- Product Photos --%>
+                  <!-- Product Photos -->
                   <div class="col d-flex justify-content-center">
                     <div>
                       <img src="${pageContext.request.contextPath}/ProductPhotos?id=${product.id}" alt="." width="128">
