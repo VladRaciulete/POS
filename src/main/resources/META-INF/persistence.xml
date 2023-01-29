@@ -5,7 +5,7 @@
              version="3.0">
 
       <persistence-unit name="default" transaction-type="JTA">
-          <jta-data-source>jdbc/PointOfSalesResource</jta-data-source>
+          <jta-data-source>jdbc/POSResource</jta-data-source>
           <class>com.pos.pos.entities.Product</class>
           <class>com.pos.pos.entities.User</class>
           <class>com.pos.pos.entities.Category</class>
