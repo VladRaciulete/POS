@@ -3,9 +3,11 @@ package com.pos.pos.ejb;
 import com.pos.pos.common.ProductDto;
 import com.pos.pos.common.ProductPhotoDto;
 import com.pos.pos.common.ProductsByCategoryDto;
+import com.pos.pos.common.TransactionDto;
 import com.pos.pos.entities.Category;
 import com.pos.pos.entities.Product;
 import com.pos.pos.entities.ProductPhoto;
+import com.pos.pos.entities.Transaction;
 import jakarta.ejb.EJBException;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -17,15 +19,15 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Stateless
-public class ProductsBean {
-    private static final Logger LOG = Logger.getLogger(ProductsBean.class.getName());
+public class TransactionBean {
+    private static final Logger LOG = Logger.getLogger(TransactionBean.class.getName());
 
     @PersistenceContext
     EntityManager entityManager;
 
     public Long findProductIdByProductName(String name) {
         //Gaseste id-ul primului produs care are numele introdus
-        List <Long> productIds = entityManager.createQuery("SELECT p.id FROM Product p WHERE p.name LIKE :inputName",Long.class)
+        List<Long> productIds = entityManager.createQuery("SELECT p.id FROM Product p WHERE p.name LIKE :inputName",Long.class)
                 .setParameter("inputName",name)
                 .getResultList();
 
@@ -34,24 +36,23 @@ public class ProductsBean {
         return productId;
     }
 
-    private List<ProductDto> copyProductsToDto(List<Product> products){
+    private List<TransactionDto> copyTransactionsToDto(List<Transaction> transactions){
         //Primeste o lista de produse
 
-        List<ProductDto> productsDto = new ArrayList<>();
-        ProductDto var;
-        Category category;
-        for(Product elem : products){
+        List<TransactionDto> transactionDto = new ArrayList<>();
+        TransactionDto var;
+        for( Transaction elem : transactions){
             //Pentru fiecare produs
 
-            category = elem.getCategory();
+
             //Creeaza un data transfer object cu proprietatile produsului
-            var = new ProductDto(elem.getId(), elem.getName(), elem.getQuantity(), elem.getPrice(), category);
+            var = new TransactionDto(elem.getTransaction_id(), elem.getTransaction_type(), elem.getPayment_type(), elem.getTotal());
 
             //Adauga obiectul in lista de data transfer objects
-            productsDto.add(var);
+            transactionDto.add(var);
         }
         //Returneaza lista de data transfer objects
-        return productsDto;
+        return transactionDto;
     }
 
     public ProductsByCategoryDto findAllProductsByCategoryId(Long categoryId){
@@ -96,7 +97,7 @@ public class ProductsBean {
             //Creeaza si returneaza obiectul de tip ProductsByCategoryDto
             ProductsByCategoryDto productsByCategoryDto = new ProductsByCategoryDto(category.getId(),category.getName(),ProductDtoList);
             return productsByCategoryDto;
-            }
+        }
         return null;
     }
 
@@ -160,7 +161,10 @@ public class ProductsBean {
 
     public void buyProductsByIds(List<Long> productIds) {
 
+
+
     }
+
 
     public void addPhotoToProduct(Long productId, String fileName, String fileType, byte[] fileContent) {
         LOG.info("addPhotoToProduct");
@@ -201,17 +205,16 @@ public class ProductsBean {
     }
 
 
-    public void decreaseQuantity(List<Long> productIds) {
-        LOG.info("decrease quantity");
-        // momentan scade cu 1 cantitatea din stoc
+    public void copyProductsToTransaction(List<Product> productsToSellI, String transaction_type, String payment_type) {
 
-        for(Long productId : productIds){
-            //Pentru fiecare id cauta produsul corespunzator si il sterge , produsul cu id ul pe care il cumparam
-            Product product = entityManager.find(Product.class,productId);
-            int quantity = product.getQuantity();
-            product.setQuantity(quantity -1 );
-
-
+       Transaction transaction = new Transaction();
+       //transaction.getTransaction_id();
+       transaction.setTransaction_type(transaction_type);
+       transaction.setPayment_type(payment_type);
+        double total;
+        for (Product elem: productsToSellI) {
+                total =+elem.getPrice();
         }
+        entityManager.persist(transaction);
     }
 }
