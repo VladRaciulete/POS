@@ -149,72 +149,32 @@ public class TransactionBean {
         product.setCategory(category);
     }
 
-    public void deleteProductsByIds(Collection<Long> productIds){
-        LOG.info("deleteProductsByIds");
-        //Sterge produsele in functie de id
-        for(Long productId : productIds){
-            //Pentru fiecare id cauta produsul corespunzator si il sterge
-            Product product = entityManager.find(Product.class,productId);
-            entityManager.remove(product);
-        }
-    }
-
-    public void buyProductsByIds(List<Long> productIds) {
-
-
-
-    }
-
-
-    public void addPhotoToProduct(Long productId, String fileName, String fileType, byte[] fileContent) {
-        LOG.info("addPhotoToProduct");
-        //Adauga poza introdusa produsului corespunzator
-        ProductPhoto photo = new ProductPhoto();
-        photo.setFileName(fileName);
-        photo.setFileType(fileType);
-        photo.setFileContent(fileContent);
-        //Cauta produsul
-        Product product = entityManager.find(Product.class, productId);
-        if (product.getPhoto() != null) {
-            //Daca produsul are deja o poza ii da remove
-            entityManager.remove(product.getPhoto());
-        }
-        //Adauga poza produsului
-        product.setPhoto(photo);
-        photo.setProduct(product);
-
-        //Da persist la noua poza in baza de date
-        entityManager.persist(photo);
-    }
-
-    public ProductPhotoDto findPhotoByProductId(Long productId) {
-        //Cauta poza produsului
-        List<ProductPhoto> photos = entityManager
-                .createQuery("SELECT p FROM ProductPhoto p WHERE p.product.id = :id", ProductPhoto.class)
-                .setParameter("id", productId)
-                .getResultList();
-
-        if (photos.isEmpty()) {
-            return null;
-        }
-        ProductPhoto photo = photos.get(0);
-        //Prima poza gasita
-        //Querry ul returneaza o lista de elemente si de asta trebuie sa luam primul element gasit
-        return new ProductPhotoDto(photo.getId(), photo.getFileName(), photo.getFileType(),
-                photo.getFileContent());
-    }
-
-
-    public void copyProductsToTransaction(List<Product> productsToSellI, String transaction_type, String payment_type) {
+    public void copyProductsToTransaction(List<ProductDto> productsToSellI, String transaction_type, String payment_type) {
 
        Transaction transaction = new Transaction();
        //transaction.getTransaction_id();
        transaction.setTransaction_type(transaction_type);
        transaction.setPayment_type(payment_type);
         double total;
-        for (Product elem: productsToSellI) {
+        for (ProductDto elem: productsToSellI) {
                 total =+elem.getPrice();
         }
         entityManager.persist(transaction);
+    }
+
+
+    public List<ProductDto> populate(List<Long> productIds) {
+        Product product = new Product();
+        List<ProductDto> productsToSell = new ArrayList<>();
+        for (Long elem:productIds) {
+            product= entityManager.find(Product.class,elem);
+            Category category = product.getCategory();
+
+            ProductDto productDto = new ProductDto(product.getId(),product.getName(),product.getQuantity(),product.getPrice(),category);
+
+            productsToSell.add(productDto);
+
+        }
+        return productsToSell;
     }
 }

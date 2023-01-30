@@ -57,7 +57,6 @@ public class Products extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Pune id-urlie produselor selectate intr un vector de string
         String[] productIdsAsString = request.getParameterValues("delete_product_ids");
-        String[] buyProductIdsAsString = request.getParameterValues("buy_product_ids");
 
         if(productIdsAsString != null) {
             List<Long> productIds = new ArrayList<>();
@@ -67,21 +66,6 @@ public class Products extends HttpServlet {
             }
             //Sterge produsele
             productsBean.deleteProductsByIds(productIds);
-        }
-
-        if(buyProductIdsAsString != null) {
-            List<Long> productIds = new ArrayList<>();
-
-            List<Product> productsToSellI = new ArrayList<>();
-            Product buyProduct= new Product();
-            for (String buyProductIdAsString : buyProductIdsAsString) {
-                //Ia fiecare string din vector si il adauga in lista de id-uri
-                buyProduct.setId(Long.parseLong(buyProductIdAsString));
-                productIds.add(Long.parseLong(buyProductIdAsString));
-            }
-            //Cumpara produsele
-            transactionBean.copyProductsToTransaction(productsToSellI,"Sell","card");
-            productsBean.decreaseQuantity(productIds);
         }
 
 
