@@ -1,5 +1,8 @@
 package com.pos.pos.entities;
+import com.pos.pos.common.ProductDto;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 /*
 Description: Aici avem Entitatea Responsabila de crearea unei tabele cu detaliile fiecarei tranzactii.
@@ -15,27 +18,39 @@ Usage : se foloseste in paralel cu tabela Transactions unde sunt listate tranzac
 
 @Entity
 public class TransactionDetails {
-    private Long transaction_id;
+
+
+
+    private int transaction_id;
     private double price;
     private Long product_id;
     private int quantity;
-
+    private int transactionDetails_id;
 
     public TransactionDetails() {
     }
 
-    public void setTransaction_id(Long transaction_id) {
-        this.transaction_id = transaction_id;
+    public void setTransactionDetails_id(int transaction_id) {
+        this.transactionDetails_id = transactionDetails_id;
     }
 
     @Id
     @GeneratedValue
-    public Long getTransaction_id() {
-        return transaction_id;
+    public int getTransactionDetails_id() {
+        return transactionDetails_id;
     }
 
 
     @Basic
+
+
+    public int getTransaction_id() {
+        return transaction_id;
+    }
+
+    public void setTransaction_id(int transaction_id) {
+        this.transaction_id = transaction_id;
+    }
     public Long getProduct_id() {
         return product_id;
     }
@@ -59,4 +74,6 @@ public class TransactionDetails {
     public void setPrice(double price) {
         this.price = price;
     }
+
+
 }

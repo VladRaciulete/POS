@@ -119,8 +119,15 @@
 
           </c:if>
         </c:forEach>
+        <div class="col d-flex justify-content-left">
+
+            <button class="btn btn-success" name="card" value="$card" type="submit">Card</button>
+
+        </div>
         <div class="col d-flex justify-content-end">
-          <button class="btn btn-success" type="submit">Go to checkout</button>
+
+            <button class="btn btn-success" name="card" value="cash" type="submit">Cash</button>
+
         </div>
       </div>
     </form>
