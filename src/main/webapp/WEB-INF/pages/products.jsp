@@ -77,7 +77,7 @@
 
   <!-- Form pe care il vad doar userii fara grupuri de acces sau utilizatorii neconectati -->
   <c:if test="${!pageContext.request.isUserInRole('ADMIN') && !pageContext.request.isUserInRole('DIRECTOR') && !pageContext.request.isUserInRole('VALID_CASHIER') && !pageContext.request.isUserInRole('CASHIER')}">
-    <form method="POST" action="${pageContext.request.contextPath}/Buy">
+    <form method="POST" action="${pageContext.request.contextPath}/Products">
 
       <!-- Afisarea produselor -->
       <div class="container text-center">
@@ -121,12 +121,12 @@
         </c:forEach>
         <div class="col d-flex justify-content-left">
 
-            <button class="btn btn-success" name="card" value="$card" type="submit">Card</button>
+            <button class="btn btn-success" name="payment" value="card" type="submit">Card</button>
 
         </div>
         <div class="col d-flex justify-content-end">
 
-            <button class="btn btn-success" name="card" value="cash" type="submit">Cash</button>
+            <button class="btn btn-success" name="payment" value="cash" type="submit">Cash</button>
 
         </div>
       </div>

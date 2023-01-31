@@ -165,19 +165,10 @@ TransactionDetailsBean transactionDetails;
         entityManager.persist(transaction);
         LOG.info("Tabela 1 e plina ");
 
+        for (ProductDto elem :productsToSellI ) {
+            transactionDetails.copyProductsToDetailedTransaction(elem, transaction.getTransaction_id());
 
-        TransactionDetails transactionDetails = new TransactionDetails();
-        transactionDetails.setTransactionDetails_id(3);
-        for (ProductDto elem: productsToSellI) {
-
-            transactionDetails.setTransaction_id(transaction.getTransaction_id());
-            transactionDetails.setProduct_id(elem.getId());
-            transactionDetails.setPrice(elem.getPrice());
-            transactionDetails.setQuantity(1);
-            LOG.info("Tabela 2 e aproape plina ");
-            entityManager.persist(transactionDetails);
         }
-        //transactionDetails.copyProductsToDetailedTransaction(productsToSellI, transaction.getTransaction_id());
 
     }
 

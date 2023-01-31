@@ -56,13 +56,13 @@ public class Products extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Pune id-urlie produselor selectate intr un vector de string
-        String card = "card";
-        String cash = "cash";
-        request.setAttribute("card", card);
-        request.setAttribute("cash", cash);
+        //String card = "card";
+       // String cash = "cash";
+        // request.setAttribute("card", card);
+        //request.setAttribute("cash", cash);
         String[] deleteProductuctIdsAsString = request.getParameterValues("delete_product_ids");
         String[] buyProductIdsAsString = request.getParameterValues("buy_product_ids");
-        String payment_type = String.valueOf(request.getParameterValues("payment"));
+        String payment_type = request.getParameter("payment");
 
         // delete if Admin
         if(deleteProductuctIdsAsString != null) {

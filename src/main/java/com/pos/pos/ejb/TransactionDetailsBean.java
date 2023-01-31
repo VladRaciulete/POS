@@ -17,16 +17,16 @@ public class TransactionDetailsBean {
     /*
        Copiaza intr-o tabela fiecare produs cu id-ul tranzactiei din care face parte
    */
-    public void copyProductsToDetailedTransaction(List<ProductDto> productsToSellI, int transaction_id) {
+    public void copyProductsToDetailedTransaction(ProductDto elem, int transaction_id) {
             TransactionDetails transactionDetails = new TransactionDetails();
-            for (ProductDto elem: productsToSellI) {
+
                 transactionDetails.setTransaction_id(transaction_id);
                 transactionDetails.setProduct_id(elem.getId());
                 transactionDetails.setPrice(elem.getPrice());
                 transactionDetails.setQuantity(1);
                 LOG.info("Tabela 2 e aproape plina ");
                 entityManager.persist(transactionDetails);
-            }
+
         }
     }
 
