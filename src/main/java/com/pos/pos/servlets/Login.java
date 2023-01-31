@@ -1,13 +1,16 @@
 package com.pos.pos.servlets;
 
+import com.pos.pos.ejb.ProductsBean;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @WebServlet(name = "Login", value = "/Login")
 public class Login extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Face forward catre login.jsp
@@ -20,9 +23,6 @@ public class Login extends HttpServlet {
         request.setAttribute("message", "Username or password incorrect");
 
         //Face forward catre login.jsp
-        //request.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(request, response);
-
-        //Face forward catre pagina principala (index)
-        response.sendRedirect(request.getContextPath());
+        request.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(request, response);
     }
 }
