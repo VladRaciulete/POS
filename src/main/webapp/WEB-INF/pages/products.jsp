@@ -94,7 +94,7 @@
 
                   <div class="row">
                     <div class="col d-flex justify-content-center">
-                      <input type="checkbox" name="delete_product_ids" value="${product.id}">
+                      <input type="checkbox" name="buy_product_ids" value="${product.id}">
                     </div>
 
                     <div class="col d-flex justify-content-center">
@@ -119,6 +119,16 @@
 
           </c:if>
         </c:forEach>
+        <div class="col d-flex justify-content-left">
+
+            <button class="btn btn-success" name="payment" value="card" type="submit">Card</button>
+
+        </div>
+        <div class="col d-flex justify-content-end">
+
+            <button class="btn btn-success" name="payment" value="cash" type="submit">Cash</button>
+
+        </div>
       </div>
     </form>
   </c:if>

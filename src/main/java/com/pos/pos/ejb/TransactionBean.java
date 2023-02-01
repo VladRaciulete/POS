@@ -1,27 +1,26 @@
 package com.pos.pos.ejb;
 
 import com.pos.pos.common.ProductDto;
-import com.pos.pos.common.ProductPhotoDto;
 import com.pos.pos.common.ProductsByCategoryDto;
 import com.pos.pos.common.TransactionDto;
-import com.pos.pos.entities.Category;
-import com.pos.pos.entities.Product;
-import com.pos.pos.entities.ProductPhoto;
-import com.pos.pos.entities.Transaction;
+import com.pos.pos.entities.*;
 import jakarta.ejb.EJBException;
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
 @Stateless
 public class TransactionBean {
     private static final Logger LOG = Logger.getLogger(TransactionBean.class.getName());
-
+@Inject
+ProductsBean productsBean;
+@Inject
+TransactionDetailsBean transactionDetails;
     @PersistenceContext
     EntityManager entityManager;
 
@@ -149,72 +148,47 @@ public class TransactionBean {
         product.setCategory(category);
     }
 
-    public void deleteProductsByIds(Collection<Long> productIds){
-        LOG.info("deleteProductsByIds");
-        //Sterge produsele in functie de id
-        for(Long productId : productIds){
-            //Pentru fiecare id cauta produsul corespunzator si il sterge
-            Product product = entityManager.find(Product.class,productId);
-            entityManager.remove(product);
-        }
-    }
 
-    public void buyProductsByIds(List<Long> productIds) {
-
-
-
-    }
-
-
-    public void addPhotoToProduct(Long productId, String fileName, String fileType, byte[] fileContent) {
-        LOG.info("addPhotoToProduct");
-        //Adauga poza introdusa produsului corespunzator
-        ProductPhoto photo = new ProductPhoto();
-        photo.setFileName(fileName);
-        photo.setFileType(fileType);
-        photo.setFileContent(fileContent);
-        //Cauta produsul
-        Product product = entityManager.find(Product.class, productId);
-        if (product.getPhoto() != null) {
-            //Daca produsul are deja o poza ii da remove
-            entityManager.remove(product.getPhoto());
-        }
-        //Adauga poza produsului
-        product.setPhoto(photo);
-        photo.setProduct(product);
-
-        //Da persist la noua poza in baza de date
-        entityManager.persist(photo);
-    }
-
-    public ProductPhotoDto findPhotoByProductId(Long productId) {
-        //Cauta poza produsului
-        List<ProductPhoto> photos = entityManager
-                .createQuery("SELECT p FROM ProductPhoto p WHERE p.product.id = :id", ProductPhoto.class)
-                .setParameter("id", productId)
-                .getResultList();
-
-        if (photos.isEmpty()) {
-            return null;
-        }
-        ProductPhoto photo = photos.get(0);
-        //Prima poza gasita
-        //Querry ul returneaza o lista de elemente si de asta trebuie sa luam primul element gasit
-        return new ProductPhotoDto(photo.getId(), photo.getFileName(), photo.getFileType(),
-                photo.getFileContent());
-    }
-
-
-    public void copyProductsToTransaction(List<Product> productsToSellI, String transaction_type, String payment_type) {
+    /*
+    Copiaza fiecare produs intr-o tranzactie sumara
+     */
+    public void copyProductsToTransaction(List<ProductDto> productsToSellI, String transaction_type, String payment_type) {
 
        Transaction transaction = new Transaction();
-       //transaction.getTransaction_id();
        transaction.setTransaction_type(transaction_type);
        transaction.setPayment_type(payment_type);
-        double total;
-        for (Product elem: productsToSellI) {
-                total =+elem.getPrice();
+        double total=0;
+        for (ProductDto elem: productsToSellI) {
+                total =total +elem.getPrice();
         }
+        transaction.setTotal(total);
         entityManager.persist(transaction);
+        LOG.info("Tabela 1 e plina ");
+
+        for (ProductDto elem :productsToSellI ) {
+            transactionDetails.copyProductsToDetailedTransaction(elem, transaction.getTransaction_id());
+
+        }
+
+    }
+
+
+
+    /*
+    Populeaza o lista cu produse
+     */
+    public List<ProductDto> populate(List<Long> productIds) {
+        Product product = new Product();
+        List<ProductDto> productsToSell = new ArrayList<>();
+        for (Long elem:productIds) {
+            product= entityManager.find(Product.class,elem);
+            Category category = product.getCategory();
+
+            ProductDto productDto = new ProductDto(product.getId(),product.getName(),product.getQuantity(),product.getPrice(),category);
+
+            productsToSell.add(productDto);
+
+        }
+        return productsToSell;
     }
 }
