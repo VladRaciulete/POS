@@ -13,6 +13,7 @@ import jakarta.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 @Stateless
@@ -214,7 +215,10 @@ public class ProductsBean {
         }
     }
 
-    public List<ProductStatisticsDto> getProductStatistics() {
+    public TreeSet<ProductStatisticsDto> getProductStatistics() {
+        LOG.info("getProductStatistics");
+        TreeSet<ProductStatisticsDto> statistics = new TreeSet();
+
         List<Product> products = entityManager.createQuery("SELECT p FROM Product p", Product.class)
                 .getResultList();
 
@@ -222,7 +226,6 @@ public class ProductsBean {
         List<TransactionDetails> transactionDet = entityManager.createQuery("SELECT t FROM TransactionDetails t", TransactionDetails.class)
                 .getResultList();
 
-        List<ProductStatisticsDto> statistics = new ArrayList<>();
         ProductStatisticsDto stats;
         int quantity;
 
@@ -234,8 +237,10 @@ public class ProductsBean {
                 }
             }
             stats = new ProductStatisticsDto(product.getId(),product.getName(),quantity);
+            LOG.info(stats.getProduct_name());
             statistics.add(stats);
         }
+
         return statistics;
     }
 }

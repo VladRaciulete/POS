@@ -1,6 +1,6 @@
 package com.pos.pos.common;
 
-public class ProductStatisticsDto {
+public class ProductStatisticsDto implements Comparable<ProductStatisticsDto> {
 
     private Long product_id;
     private String product_name;
@@ -22,5 +22,14 @@ public class ProductStatisticsDto {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    @Override
+    public int compareTo(ProductStatisticsDto o) {
+        if(getQuantity() > o.getQuantity()){
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

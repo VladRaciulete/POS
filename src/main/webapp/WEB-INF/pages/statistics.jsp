@@ -5,7 +5,7 @@
 <t:pageTemplate pageTitle="Statistics">
     <h3 class="mt-5 mb-5 font-weight-normal text-center">Statistics</h3>
 
-    <div class="container text-center">
+    <div class="container text-center w-50">
 
         <c:forEach var="stat" items="${statistics}">
             <div class="row mb-1">

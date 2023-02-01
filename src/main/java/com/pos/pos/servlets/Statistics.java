@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.TreeSet;
 
 @WebServlet(name = "Statistics", value = "/Statistics")
 public class Statistics extends HttpServlet {
@@ -20,7 +21,7 @@ public class Statistics extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("activePage","Statistics");
 
-        List<ProductStatisticsDto> stats = productsBean.getProductStatistics();
+        TreeSet<ProductStatisticsDto> stats = productsBean.getProductStatistics();
         request.setAttribute("statistics",stats);
 
         request.getRequestDispatcher("/WEB-INF/pages/statistics.jsp").forward(request,response);
