@@ -5,12 +5,22 @@ public class TransactionDto {
      String transaction_type;
      String payment_type;
      double total;
+   int scanned;
 
-    public TransactionDto(int transaction_id, String transaction_type, String payment_type, double total) {
+    public TransactionDto(int transaction_id, String transaction_type, String payment_type, double total, int scanned) {
         this.transaction_id = transaction_id;
         this.transaction_type = transaction_type;
         this.payment_type = payment_type;
         this.total = total;
+        this.scanned = scanned;
+    }
+
+    public int isScanned() {
+        return scanned;
+    }
+
+    public void setScanned(int scanned) {
+        this.scanned = scanned;
     }
 
     public int getTransaction_id() {

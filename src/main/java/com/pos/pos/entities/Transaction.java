@@ -25,6 +25,7 @@ public class Transaction {
     private String transaction_type;
     private String payment_type;
     private double total;
+    private int scanned = 1;
 
     public void setTransaction_id(int transaction_id) {
         this.transaction_id = transaction_id;
@@ -37,6 +38,15 @@ public class Transaction {
     }
 
     @Basic
+
+    public int isScanned() {
+        return scanned;
+    }
+
+    public void setScanned(int scanned) {
+        this.scanned = scanned;
+    }
+
     public String getTransaction_type() {
         return transaction_type;
     }

@@ -1,12 +1,10 @@
 package com.pos.pos.servlets;
 
-import com.pos.pos.common.CategoryDto;
-import com.pos.pos.common.ProductDto;
-import com.pos.pos.common.ProductsByCategoryDto;
-import com.pos.pos.common.UserDto;
+import com.pos.pos.common.*;
 import com.pos.pos.ejb.CategoriesBean;
 import com.pos.pos.ejb.ProductsBean;
 import com.pos.pos.ejb.TransactionBean;
+import com.pos.pos.ejb.TransactionDetailsBean;
 import com.pos.pos.entities.Category;
 import com.pos.pos.entities.Product;
 import jakarta.inject.Inject;
@@ -17,15 +15,18 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @WebServlet(name = "Products", value = "/Products")
 public class Products extends HttpServlet {
+    private static final Logger LOG = Logger.getLogger(Products.class.getName());
 
     @Inject
     ProductsBean productsBean;
     @Inject
     CategoriesBean categoryBean;
-
+    @Inject
+    TransactionDetailsBean transactionDetailsBean;
     @Inject
     TransactionBean transactionBean;
     @Override
@@ -57,15 +58,14 @@ public class Products extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Pune id-urlie produselor selectate intr un vector de string
         //String card = "card";
-       // String cash = "cash";
+        // String cash = "cash";
         // request.setAttribute("card", card);
         //request.setAttribute("cash", cash);
         String[] deleteProductuctIdsAsString = request.getParameterValues("delete_product_ids");
-        String[] buyProductIdsAsString = request.getParameterValues("buy_product_ids");
-        String payment_type = request.getParameter("payment");
+
 
         // delete if Admin
-        if(deleteProductuctIdsAsString != null) {
+        if (deleteProductuctIdsAsString != null) {
             List<Long> productIds = new ArrayList<>();
             for (String productIdAsString : deleteProductuctIdsAsString) {
                 //Ia fiecare string din vector si il adauga in lista de id-uri
@@ -75,26 +75,6 @@ public class Products extends HttpServlet {
             productsBean.deleteProductsByIds(productIds);
             response.sendRedirect(request.getContextPath() + "/Products");
         }
-
-        // buy if !Admin
-        if(buyProductIdsAsString != null) {
-            List<Long> productIds = new ArrayList<>();
-
-            for (String buyProductIdAsString : buyProductIdsAsString) {
-                productIds.add(Long.parseLong(buyProductIdAsString));
-            }
-            List<ProductDto> productsToSell = transactionBean.populate(productIds);
-
-            request.setAttribute("productsToSell", productsToSell);
-
-
-            //Cumpara produsele
-
-            transactionBean.copyProductsToTransaction(productsToSell,"Sell", payment_type);
-            productsBean.decreaseQuantity(productIds);
-        }
-
-        //Face forward catre servletul Products
-        request.getRequestDispatcher("/WEB-INF/pages/checkout.jsp").forward(request,response);
+        request.getRequestDispatcher("/WEB-INF/pages/products.jsp").forward(request,response);
     }
 }

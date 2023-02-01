@@ -1,9 +1,17 @@
 package com.pos.pos.servlets;
 
 import com.pos.pos.common.ProductDto;
+import com.pos.pos.common.TransactionDetailsDto;
+import com.pos.pos.common.TransactionDto;
 import com.pos.pos.ejb.ProductsBean;
 import com.pos.pos.ejb.TransactionBean;
+import com.pos.pos.ejb.TransactionDetailsBean;
+import com.pos.pos.entities.TransactionDetails;
+import com.sun.tools.sjavac.Log;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -11,31 +19,32 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @WebServlet(name = "Buy", value = "/Buy")
 public class Buy extends HttpServlet {
+    private static final Logger LOG = Logger.getLogger(Buy.class.getName());
     @Inject
     TransactionBean transactionBean;
     @Inject
     ProductsBean productsBean;
-
+    @Inject
+    TransactionDetailsBean transactionDetailsBean;
+    @PersistenceContext
+    EntityManager entityManager;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        //Trimite catre jsp pagina activa (Products)
+        //Trimite catre jsp pagina activa (Buy)
         request.setAttribute("activePage","Buy");
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String card = "card";
-        String cash = "cash";
-        request.setAttribute("card", card);
-        request.setAttribute("cash", cash);
-        String[] buyProductIdsAsString = request.getParameterValues("product_ids");
-        String payment_type = String.valueOf(request.getParameterValues("payment"));
-
+        String[] buyProductIdsAsString = request.getParameterValues("buy_product_ids");
+        String payment_type = request.getParameter("payment");
+        // buy if !Admin
         if(buyProductIdsAsString != null) {
             List<Long> productIds = new ArrayList<>();
 
@@ -49,11 +58,23 @@ public class Buy extends HttpServlet {
 
             //Cumpara produsele
 
-            transactionBean.copyProductsToTransaction(productsToSell,"Sell", payment_type);
+            transactionBean.copyProductsDtoToTransaction(productsToSell,"Sell", payment_type);
             productsBean.decreaseQuantity(productIds);
         }
+        List<TransactionDto> unscannedTransactions = transactionBean.findAllUnscannedTransactions();
+        List<Integer> unscannedTransactionsIDs = new ArrayList<>();
+        List<TransactionDetailsDto> transactionDetailsDtoList = transactionDetailsBean.findAllUnscannedTransactionDetails(unscannedTransactionsIDs);
 
-        //Face forward catre checkout.jsp
+        for (TransactionDto elem:unscannedTransactions) {
+            unscannedTransactionsIDs.add(elem.getTransaction_id());
+            LOG.info(""+elem.getTransaction_id());
+        }
 
+        request.setAttribute("unscannedTransactions",unscannedTransactions);
+        request.setAttribute("transactionDetailsDtoList",transactionDetailsDtoList);
+
+        //Face forward catre servletul Products
+        request.getRequestDispatcher("/WEB-INF/pages/checkout.jsp").forward(request,response);
     }
 }
+
