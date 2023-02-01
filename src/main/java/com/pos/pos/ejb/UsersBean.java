@@ -27,6 +27,9 @@ public class UsersBean {
     @Inject
     PasswordBean passwordBean;
 
+    @Inject
+    MailBean mailBean;
+
 
     public List<UserDto> findAllUsers() {
         LOG.info("findAllUsers");
@@ -75,6 +78,14 @@ public class UsersBean {
 
         //Adauga userului grupurile de acces
         assignGroupsToUser(username, groups);
+
+        //Cand userul adaugat are grupul de acces casier trimit mail catre directori
+        if(groups.contains("CASHIER")){
+            List<String> emails = findAllEmailsForDirectors();
+            if(emails != null) {
+                mailBean.sendMailForNewCashierAdded(emails);
+            }
+        }
     }
 
     public void deleteUserRightsByIds(Collection<Long> userIds){
@@ -255,4 +266,41 @@ public class UsersBean {
             throw new EJBException(ex);
         }
     }
+
+
+    public List<String> findAllEmailsForDirectors() {
+        LOG.info("findAllDirectors");
+        try{
+            List<Long> userIds = null;
+            List<String> emails = null;
+            //Cauta toti userii din baza de date
+            List<UserGroup> usersGroups = entityManager.createQuery("SELECT u FROM UserGroup u WHERE u.userGroup =:name", UserGroup.class)
+                    .setParameter("name","DIRECTOR")
+                    .getResultList();
+
+            for (UserGroup userGroup : usersGroups) {
+                userIds.add(userGroup.getUserId());
+            }
+
+            if (userIds == null) {
+                return emails;
+            }
+
+            List<User> users = entityManager.createQuery("SELECT u FROM User u WHERE u.id IN :userIds", User.class)
+                    .setParameter("userIds",userIds)
+                    .getResultList();
+
+            for(User user : users) {
+                emails.add(user.getEmail());
+            }
+
+            //Returneaza emailurile userilor cu grupul de acces DIRECTOR
+            return emails;
+        }
+        catch(Exception ex){
+            throw new EJBException(ex);
+
+        }
+    }
+
 }

@@ -6,17 +6,6 @@
 
   <!-- Form pe care il vad doar userii cu grupurile de acces ADMIN si DIRECTOR -->
   <c:if test="${pageContext.request.isUserInRole('VALID_CASHIER') || pageContext.request.isUserInRole('ADMIN')}">
-    <form method="POST" action="${pageContext.request.contextPath}/Buy">
-
-
-        <div class="col d-flex justify-content-center">
-          <button class="btn btn-primary btn-lg" type="submit">Approve and Scan products</button>
-        </div>
-
-
-      <br>
-
-
 
       <div class="container text-center">
         <c:forEach var="elem" items="${unscannedTransactions}">
@@ -29,7 +18,11 @@
             <div class="col d-flex justify-content-center">
               Tiplul tranzactiei ${elem.transaction_type}<br>
               Cum s-a platit ${elem.payment_type}<br>
-              Total: ${elem.total}
+              Total: ${elem.total}<br>
+              Id : ${elem.transaction_id}
+              <div class="col d-flex justify-content-center">
+                <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/ApproveTransaction?id=${elem.transaction_id}">Approve and Scan products</a>
+              </div>
             </div>
             <c:forEach var="elem" items="${transactionDetailsDtoList}"><br>
               <c:if test="${elem != null}"><br>
@@ -40,12 +33,10 @@
 
             </c:forEach>
 
-            <div class="row">
-              <div class="col d-flex justify-content-center">
-                <input type="checkbox" name="scan_transaction_id" value="${elem.transaction_id}">
-              </div>
+
+            <br>
+
           </div>
-        </div>
 
       </div>
 
@@ -57,7 +48,6 @@
 
       </div>
       </div>
-    </form>
   </c:if>
 
   <!-- Form pe care il vad doar userii fara grupuri de acces sau utilizatorii neconectati -->

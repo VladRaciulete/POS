@@ -20,9 +20,6 @@ public class Login extends HttpServlet {
         request.setAttribute("message", "Username or password incorrect");
 
         //Face forward catre login.jsp
-        //request.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(request, response);
-
-        //Face forward catre pagina principala (index)
-        response.sendRedirect(request.getContextPath());
+        request.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(request, response);
     }
 }

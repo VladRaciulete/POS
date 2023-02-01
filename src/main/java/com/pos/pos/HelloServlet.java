@@ -1,9 +1,12 @@
 package com.pos.pos;
 
 import java.io.*;
+
+import jakarta.annotation.security.DeclareRoles;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+@DeclareRoles({"ADMIN", "DIRECTOR","CASHIER","VALID_CASHIER"})
 @WebServlet(name = "helloServlet", value = "/hello-servlet")
 public class HelloServlet extends HttpServlet {
     private String message;

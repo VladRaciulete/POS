@@ -119,5 +119,6 @@ TransactionDetailsBean transactionDetails;
     public void scanTransaction(int transaction_id) {
         Transaction transaction = entityManager.find(Transaction.class,transaction_id);
         transaction.setScanned(0);
+        entityManager.persist(transaction);
     }
 }

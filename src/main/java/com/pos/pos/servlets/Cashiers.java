@@ -31,6 +31,9 @@ public class Cashiers extends HttpServlet {
         List<UserDto> validCashiers = usersBean.findAllValidCashiers();
         request.setAttribute("validCashiers",validCashiers);
 
+        //Trimite catre jsp pagina activa (Cashiers)
+        request.setAttribute("activePage","Cashiers");
+
         //Face forward catre cashiers.jsp
         request.getRequestDispatcher("/WEB-INF/pages/cashiers.jsp").forward(request,response);
     }

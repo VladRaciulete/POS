@@ -2,10 +2,12 @@ package com.pos.pos.ejb;
 
 import com.pos.pos.common.ProductDto;
 import com.pos.pos.common.ProductPhotoDto;
+import com.pos.pos.common.ProductStatisticsDto;
 import com.pos.pos.common.ProductsByCategoryDto;
 import com.pos.pos.entities.Category;
 import com.pos.pos.entities.Product;
 import com.pos.pos.entities.ProductPhoto;
+import com.pos.pos.entities.TransactionDetails;
 import jakarta.ejb.EJBException;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -14,6 +16,7 @@ import jakarta.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 @Stateless
@@ -213,5 +216,34 @@ public class ProductsBean {
 
 
         }
+    }
+
+    public TreeSet<ProductStatisticsDto> getProductStatistics() {
+        LOG.info("getProductStatistics");
+        TreeSet<ProductStatisticsDto> statistics = new TreeSet();
+
+        List<Product> products = entityManager.createQuery("SELECT p FROM Product p", Product.class)
+                .getResultList();
+
+
+        List<TransactionDetails> transactionDet = entityManager.createQuery("SELECT t FROM TransactionDetails t", TransactionDetails.class)
+                .getResultList();
+
+        ProductStatisticsDto stats;
+        int quantity;
+
+        for(Product product : products) {
+            quantity = 0;
+            for (TransactionDetails transaction : transactionDet) {
+                if(product.getId().equals(transaction.getProduct_id())){
+                    quantity += 1;
+                }
+            }
+            stats = new ProductStatisticsDto(product.getId(),product.getName(),quantity);
+            LOG.info(stats.getProduct_name());
+            statistics.add(stats);
+        }
+
+        return statistics;
     }
 }
