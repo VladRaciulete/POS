@@ -25,6 +25,10 @@
                         <li class="nav-item">
                             <a class="nav-link ${activePage eq 'Cashiers' ? 'active' : ''}" aria-current="page" href="${pageContext.request.contextPath}/Cashiers">Cashiers</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link ${activePage eq 'Statistics' ? 'active' : ''}" aria-current="page" href="${pageContext.request.contextPath}/Statistics">Statistics</a>
+                        </li>
                     </c:if>
 
                     <c:if test="${pageContext.request.isUserInRole('VALID_CASHIER')}">

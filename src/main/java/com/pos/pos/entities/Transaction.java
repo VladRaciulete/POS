@@ -1,18 +1,5 @@
 package com.pos.pos.entities;
 
-
-/*
-Description: Aici avem Entitatea Responsabila de crearea unei tabele unde avel listate toate tranzactiile fara detalii despre ce contin ele. In cazul unor viitoare impedimente se vor unii Transactions cu TransactionsDEtails
-
-Fields : @transaction_id: Id ul propriu zis al fiecarei tranzactii in functie de care o sa legam tabelele
-         @transaction_type : tipul tranzactiei , sell/refound ;
-         @payment_type : modul in care a fost achitat , CASH/CARD
-         @total: suma produselor achitate
-
-Usage :In functie de modul in care implementam logica se pot schimba detalii
-
- */
-
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,12 +9,13 @@ import jakarta.persistence.Id;
 public class Transaction {
 
     private int transaction_id;
+
     private String transaction_type;
     private String payment_type;
     private double total;
 
-    public void setTransaction_id(int transaction_id) {
-        this.transaction_id = transaction_id;
+    public void setTransaction_id(int id) {
+        this.transaction_id = id;
     }
 
     @Id
@@ -35,6 +23,7 @@ public class Transaction {
     public int getTransaction_id() {
         return transaction_id;
     }
+
 
     @Basic
     public String getTransaction_type() {
@@ -60,6 +49,4 @@ public class Transaction {
     public void setTotal(double total) {
         this.total = total;
     }
-
-
 }

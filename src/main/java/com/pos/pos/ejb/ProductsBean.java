@@ -1,11 +1,10 @@
 package com.pos.pos.ejb;
 
-import com.pos.pos.common.ProductDto;
-import com.pos.pos.common.ProductPhotoDto;
-import com.pos.pos.common.ProductsByCategoryDto;
+import com.pos.pos.common.*;
 import com.pos.pos.entities.Category;
 import com.pos.pos.entities.Product;
 import com.pos.pos.entities.ProductPhoto;
+import com.pos.pos.entities.TransactionDetails;
 import jakarta.ejb.EJBException;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -213,5 +212,30 @@ public class ProductsBean {
 
 
         }
+    }
+
+    public List<ProductStatisticsDto> getProductStatistics() {
+        List<Product> products = entityManager.createQuery("SELECT p FROM Product p", Product.class)
+                .getResultList();
+
+
+        List<TransactionDetails> transactionDet = entityManager.createQuery("SELECT t FROM TransactionDetails t", TransactionDetails.class)
+                .getResultList();
+
+        List<ProductStatisticsDto> statistics = new ArrayList<>();
+        ProductStatisticsDto stats;
+        int quantity;
+
+        for(Product product : products) {
+            quantity = 0;
+            for (TransactionDetails transaction : transactionDet) {
+                if(product.getId().equals(transaction.getProduct_id())){
+                    quantity += 1;
+                }
+            }
+            stats = new ProductStatisticsDto(product.getId(),product.getName(),quantity);
+            statistics.add(stats);
+        }
+        return statistics;
     }
 }

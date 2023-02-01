@@ -178,6 +178,7 @@ TransactionDetailsBean transactionDetails;
     Populeaza o lista cu produse
      */
     public List<ProductDto> populate(List<Long> productIds) {
+        LOG.info("POPULATE FUNCTION");
         Product product = new Product();
         List<ProductDto> productsToSell = new ArrayList<>();
         for (Long elem:productIds) {
@@ -185,7 +186,7 @@ TransactionDetailsBean transactionDetails;
             Category category = product.getCategory();
 
             ProductDto productDto = new ProductDto(product.getId(),product.getName(),product.getQuantity(),product.getPrice(),category);
-
+            LOG.info(productDto.getName() + "  $" + productDto.getPrice());
             productsToSell.add(productDto);
 
         }

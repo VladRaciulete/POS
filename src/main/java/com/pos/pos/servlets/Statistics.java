@@ -1,31 +1,29 @@
 package com.pos.pos.servlets;
 
-import com.pos.pos.common.UserDto;
-import com.pos.pos.ejb.MailBean;
-import com.pos.pos.ejb.UsersBean;
+import com.pos.pos.common.ProductStatisticsDto;
+import com.pos.pos.ejb.ProductsBean;
 import jakarta.inject.Inject;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-@WebServlet(name = "SendMail", value = "/SendMail")
-public class SendMail extends HttpServlet {
-    @Inject
-    MailBean mailBean;
+@WebServlet(name = "Statistics", value = "/Statistics")
+public class Statistics extends HttpServlet {
 
     @Inject
-    UsersBean usersBean;
-    private static final Logger LOG = Logger.getLogger(UsersBean.class.getName());
+    ProductsBean productsBean;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("activePage","Statistics");
 
+        List<ProductStatisticsDto> stats = productsBean.getProductStatistics();
+        request.setAttribute("statistics",stats);
+
+        request.getRequestDispatcher("/WEB-INF/pages/statistics.jsp").forward(request,response);
     }
 
     @Override
