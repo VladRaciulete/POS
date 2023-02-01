@@ -63,16 +63,18 @@ public class Buy extends HttpServlet {
         }
         List<TransactionDto> unscannedTransactions = transactionBean.findAllUnscannedTransactions();
         List<Integer> unscannedTransactionsIDs = new ArrayList<>();
-        List<TransactionDetailsDto> transactionDetailsDtoList = transactionDetailsBean.findAllUnscannedTransactionDetails(unscannedTransactionsIDs);
+        int transaction_id = Integer.parseInt(request.getParameter("scan_transaction_id"));
+
 
         for (TransactionDto elem:unscannedTransactions) {
             unscannedTransactionsIDs.add(elem.getTransaction_id());
             LOG.info(""+elem.getTransaction_id());
         }
+        List<TransactionDetailsDto> transactionDetailsDtoList = transactionDetailsBean.findAllUnscannedTransactionDetails(unscannedTransactionsIDs);
 
         request.setAttribute("unscannedTransactions",unscannedTransactions);
         request.setAttribute("transactionDetailsDtoList",transactionDetailsDtoList);
-
+        transactionBean.scanTransaction(transaction_id);
         //Face forward catre servletul Products
         request.getRequestDispatcher("/WEB-INF/pages/checkout.jsp").forward(request,response);
     }

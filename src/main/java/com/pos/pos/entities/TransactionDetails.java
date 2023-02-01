@@ -24,6 +24,8 @@ public class TransactionDetails {
     private int transaction_id;
     private double price;
     private Long product_id;
+
+    private String product_name;
     private int quantity;
     private int transactionDetails_id;
 
@@ -40,8 +42,17 @@ public class TransactionDetails {
         return transactionDetails_id;
     }
 
-
     @Basic
+
+
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
+    }
 
 
     public int getTransaction_id() {

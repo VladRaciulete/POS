@@ -26,6 +26,7 @@ public class TransactionDetailsBean {
     public void copyProductToDetailedTransaction(ProductDto elem, int transaction_id) {
             TransactionDetails transactionDetails = new TransactionDetails();
 
+                transactionDetails.setProduct_name(elem.getName());
                 transactionDetails.setTransaction_id(transaction_id);
                 transactionDetails.setProduct_id(elem.getId());
                 transactionDetails.setPrice(elem.getPrice());
@@ -41,7 +42,7 @@ public class TransactionDetailsBean {
         for( TransactionDetails elem : transactionDetails){
 
             var = new TransactionDetailsDto(
-            elem.getTransaction_id(),elem.getPrice(),elem.getProduct_id(), elem.getQuantity(),elem.getTransactionDetails_id());
+            elem.getTransaction_id(),elem.getPrice(),elem.getProduct_id(),elem.getProduct_name() ,elem.getTransactionDetails_id(),elem.getQuantity());
             transactionDetailsDto.add(var);
         }
         //Returneaza lista de data transfer objects
@@ -53,9 +54,11 @@ public class TransactionDetailsBean {
         try{
             List<TransactionDetails> transactionDetails = new ArrayList<>();
             for (Integer elem:unscannedTransactionsIDs) {
+                int i = elem;
                 TypedQuery<TransactionDetails> typedQuery = entityManager.createQuery(
-        "SELECT c FROM TransactionDetails c WHERE c.transaction_id =: elem", TransactionDetails.class).setParameter("elem",elem);
-                 transactionDetails.add(typedQuery.getSingleResult());
+        "SELECT c FROM TransactionDetails c WHERE c.transaction_id=:elem", TransactionDetails.class);
+                typedQuery.setParameter("elem",i);
+                transactionDetails = typedQuery.getResultList();
             }
 
             return copyTransactionDetailsToDto(transactionDetails);
@@ -65,6 +68,5 @@ public class TransactionDetailsBean {
             throw new EJBException(ex);
         }
     }
-
-    }
+}
 

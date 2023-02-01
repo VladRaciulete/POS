@@ -104,7 +104,8 @@ TransactionDetailsBean transactionDetails;
         LOG.info("findAllUnscannedTransactions");
         try{
             //Querry care selecteaza toate categoriile din tebelul Category
-            TypedQuery<Transaction> typedQuery = entityManager.createQuery("SELECT c FROM Transaction c where c.scanned=1", Transaction.class);
+            int scanned = 0;
+            TypedQuery<Transaction> typedQuery = entityManager.createQuery("SELECT c FROM Transaction c where c.scanned=:scanned", Transaction.class).setParameter("scanned",1);
             //Pune categoriile intr o lista
             List<Transaction> transactions = typedQuery.getResultList();
             //Apeleaza functia care returneaza categoriile ca DTO (data transfer objects)
@@ -115,4 +116,8 @@ TransactionDetailsBean transactionDetails;
         }
     }
 
+    public void scanTransaction(int transaction_id) {
+        Transaction transaction = entityManager.find(Transaction.class,transaction_id);
+        transaction.setScanned(0);
+    }
 }

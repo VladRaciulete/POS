@@ -4,18 +4,28 @@ public class TransactionDetailsDto {
     private int transaction_id;
     private double price;
     private Long product_id;
+    private String product_name;
     private int quantity;
     private int transactionDetails_id;
 
     public TransactionDetailsDto() {
     }
 
-    public TransactionDetailsDto(int transaction_id, double price, Long product_id, int quantity, int transactionDetails_id) {
+    public TransactionDetailsDto(int transaction_id, double price, Long product_id, String product_name, int quantity, int transactionDetails_id) {
         this.transaction_id = transaction_id;
         this.price = price;
         this.product_id = product_id;
+        this.product_name = product_name;
         this.quantity = quantity;
         this.transactionDetails_id = transactionDetails_id;
+    }
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
     }
 
     public int getTransaction_id() {
